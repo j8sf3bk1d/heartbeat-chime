@@ -2,4 +2,4 @@
 
 The public sibling is a development preview. See [roadmap](../docs/ROADMAP.md) and [release audit](../docs/release-audit.md) for current blockers and evidence. No remote is configured.
 
-No parallel lanes are currently assigned. Before starting concurrent work, record an owner, scope, dependencies, shared resources and handoff here; use [coordination guidance](../docs/process/coordination.md). Update this file when ownership or the frontier changes. Keep credentials, private data and conversational transcripts out of the board.
+The release audit is complete; media rights, dependency notices, reporting channel and native validation remain open. No parallel lanes are currently assigned. Before starting concurrent work, record an owner, scope, dependencies, shared resources and handoff here; use [coordination guidance](../docs/process/coordination.md). Update this file when ownership or the frontier changes. Keep credentials, private data and conversational transcripts out of the board.
