@@ -6,3 +6,18 @@ playwright-report/
 
 # Durable packaged apps; preserve any bundles you still use.
 artifacts/
+
+# Local credentials, exported settings, and diagnostic data.
+.env
+.env.*
+!.env.example
+.envrc
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.mobileprovision
+heartbeat-backup-*.json
+heartbeat-config-*.json
+*.log
