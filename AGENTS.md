@@ -1,3 +1,5 @@
 # Agent guidance
 
-Read README.md, docs/ROADMAP.md, and docs/upstream-sync.md before changing this preview. Preserve user data and avoid importing private assets or credentials. Check provenance and license before adding distributable media. Run focused tests first and broaden for storage, security or desktop changes. Document behavior and validation limitations. Do not add a remote or publish without the owner's direction.
+Start with [cold start](docs/process/cold-start.md) and follow the user's request. The guidance is provider-neutral and does not require a particular agent or tool.
+
+Preserve existing changes, the running app and user data. Review applicable licenses and provenance before adding media; never commit credentials or private user files. Start with focused tests and broaden for storage, security or desktop changes. Keep the roadmap and coordination notes current. Do not configure a remote or publish without the owner's direction.

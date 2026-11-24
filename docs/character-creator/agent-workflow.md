@@ -2,7 +2,7 @@
 
 ## Outcome and boundaries
 
-Produce a named Heartbeat character JSON and a concise handoff with paths, visual decisions, validation, known gaps, and import steps. Use the user's description and references, preserve their files and running app, and use a task-owned output folder. Image creation requires an available image-generation tool and its applicable workflow. If none is available, explain the capability gap and prepare the manifest/checklist; do not claim placeholder art is finished. Do not require provider API keys or copy secrets. Ask before spending on a separate paid service.
+Produce a named Heartbeat character JSON and a concise handoff with paths, visual decisions, validation, known gaps, and import steps. Use the user's description and references, preserve their files and running app, and use a task-owned output folder. Image creation requires an available image-generation tool and its applicable workflow. In a Codex project, use the image-generation capability or skill when it is available and applicable. Other agents should check their own tools; no particular provider is required or assumed. If none is available, explain the capability gap and prepare the manifest/checklist; do not claim placeholder art is finished. Do not require provider API keys or copy secrets. Ask before spending on a separate paid service.
 
 ## Milestones and completion
 
