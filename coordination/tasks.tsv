@@ -1,6 +1,6 @@
 id	status	owner	dependency	title	next_step
 PUB-001	done	maintainer	none	Audit public source and release readiness	Findings and remaining decisions recorded in docs/release-audit.md
 PUB-002	done	maintainer	PUB-001	Resolve historical private-workspace references	Sanitized reachable history; verified local recovery bundle retained
-PUB-003	ready	unassigned	PUB-001	Confirm generated-media distribution terms	Verify generation plan and provider/voice terms for GitHub redistribution
+PUB-003	done	maintainer	PUB-001	Document generated-media provenance	Owner approved sharing with free reference project; provider terms remain linked for context
 PUB-004	ready	unassigned	PUB-001	Validate desktop isolation and native audio	Exercise the community bundle on a target machine without disturbing personal data
 PUB-005	proposed	unassigned	PUB-004	Prepare signed public distribution	Choose supported platforms and establish signing and release validation
