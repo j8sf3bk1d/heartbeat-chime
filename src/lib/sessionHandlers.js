@@ -64,15 +64,59 @@ export function registerSessionHandlers({
     }
   });
 
+  // Only the fields changed by setup are captured. Later edits to those fields
+  // block undo; unrelated volume, tags, timers and other preferences survive.
+  const setupFields = ["enabled", "presetId", "presetIds", "playbackMode", "playbackCursor", "presetWeights"];
+  const capture = (interval) => Object.fromEntries(setupFields.map(key => [key, structuredClone(interval[key])]));
+  const comparable = (snapshot) => { const { playbackCursor, ...rest } = snapshot; return JSON.stringify(rest); };
+  const rescheduleChanged = (previous, next) => {
+    if (!state.running) return;
+    for (const interval of next) {
+      const prior = previous.find(item => item.id === interval.id);
+      if (!prior || prior.enabled !== interval.enabled) runtimeScheduler.setNextForInterval(interval, Date.now());
+    }
+  };
   elements.soundProfile.addEventListener("change", (event) => {
-    const nextProfile = getProfileById(event.target.value) || SOUND_PROFILES[0];
-    state.selectedProfileId = nextProfile.id;
-    state.intervals = applyProfileToIntervals(state.intervals, nextProfile);
+    runtime.soundProfileDraftId = event.target.value;
     renderSession();
-    renderIntervals();
-    renderTimerSoundSelectors();
-    saveState();
+  });
+  elements.soundProfileApply.addEventListener("click", () => {
+    const nextProfile = getProfileById(elements.soundProfile.value);
+    if (!nextProfile) { elements.soundProfileStatus.textContent = "Choose an available sound mode."; return; }
+    const before = state.intervals.map(interval => ({id: interval.id, values: capture(interval)}));
+    let intervals = applyProfileToIntervals(state.intervals, nextProfile);
+    if (nextProfile.quickIntervals) intervals = intervals.map(interval => ({...interval, enabled: nextProfile.quickIntervals.includes(interval.minutes)}));
+    const candidate = {...state, selectedProfileId: nextProfile.id, intervals};
+    if (!saveState(candidate)) { elements.soundProfileStatus.textContent = "Could not save setup. Your previous settings remain in place."; return; }
+    runtime.soundProfileUndo = {selectedProfileId: state.selectedProfileId, before, appliedProfileId: nextProfile.id, applied: intervals.map(interval => ({id:interval.id, values:capture(interval)}))};
+    rescheduleChanged(state.intervals, intervals);
+    state.selectedProfileId = nextProfile.id;
+    state.intervals = intervals;
+    if (state.running) void syncTrayStatus?.();
+    runtime.soundProfileDraftId = nextProfile.id;
+    renderSession(); renderIntervals(); renderTimerSoundSelectors();
+    elements.soundProfileStatus.textContent = `${nextProfile.label} applied. Undo is available until the app closes or an assignment is edited.`;
     addLog(`Applied sound mode: ${nextProfile.label}`);
+  });
+  elements.soundProfileUndo.addEventListener("click", () => {
+    const undo = runtime.soundProfileUndo;
+    if (!undo) return;
+    const unchanged = state.selectedProfileId === undo.appliedProfileId && state.intervals.length === undo.applied.length && undo.applied.every(({id,values}) => {
+      const interval = state.intervals.find(item => item.id === id);
+      return interval && comparable(capture(interval)) === comparable(values);
+    });
+    if (!unchanged) { elements.soundProfileStatus.textContent = "An interval changed after setup, so undo was not applied. Your edits are intact."; return; }
+    const intervals = state.intervals.map(interval => ({...interval, ...structuredClone(undo.before.find(item => item.id === interval.id).values)}));
+    if (!saveState({...state, selectedProfileId:undo.selectedProfileId, intervals})) { elements.soundProfileStatus.textContent = "Could not save undo. Your current settings remain in place."; return; }
+    rescheduleChanged(state.intervals, intervals);
+    state.selectedProfileId = undo.selectedProfileId;
+    state.intervals = intervals;
+    if (state.running) void syncTrayStatus?.();
+    runtime.soundProfileDraftId = undo.selectedProfileId;
+    runtime.soundProfileUndo = null;
+    renderSession(); renderIntervals(); renderTimerSoundSelectors();
+    elements.soundProfileStatus.textContent = "Previous interval setup restored.";
+    addLog("Undid sound mode setup");
   });
 
   elements.launchAtLogin.addEventListener("change", async (event) => {

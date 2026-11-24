@@ -54,8 +54,8 @@ export function createModelHelpers({ state, customLibrary, presets, soundProfile
     const grouped = new Map();
     for (const preset of availablePresets) {
       const builtIn = isBuiltInPresetId(preset.id);
-      const groupKey = builtIn ? "__built-in__" : `pack:${preset.packId || "imported"}`;
-      const groupLabel = builtIn ? "Built-in" : `Imported: ${getPackLabel(preset.packId)}`;
+      const groupKey = builtIn ? (preset.sourceTheme ? `theme:${preset.sourceTheme}` : "__built-in__") : `pack:${preset.packId || "imported"}`;
+      const groupLabel = builtIn ? (preset.sourceTheme ? `Theme: ${preset.sourceTheme}` : "Built-in") : `Imported: ${getPackLabel(preset.packId)}`;
       if (!grouped.has(groupKey)) {
         grouped.set(groupKey, {
           key: groupKey,

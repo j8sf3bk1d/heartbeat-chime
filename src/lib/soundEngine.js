@@ -1,5 +1,6 @@
 import { clamp } from "./state.js";
 import { getBuiltInVoiceUrl } from "./builtInVoices.js";
+import { getThemedSoundUrl } from "./themedSounds.js";
 
 function isRecoverableAudioState(state) {
   return state === "suspended" || state === "interrupted";
@@ -148,7 +149,7 @@ function playBrightPing(ctx, startTime, gain) {
 }
 
 export class SoundEngine {
-  constructor({ customBlobLoader, builtInVoiceUrl = getBuiltInVoiceUrl, nativeClipPlayer = null }) {
+  constructor({ customBlobLoader, builtInVoiceUrl = (id) => getBuiltInVoiceUrl(id) || getThemedSoundUrl(id), nativeClipPlayer = null }) {
     this.ctx = null;
     this.masterVolume = 0.75;
     this.customBlobLoader = customBlobLoader;

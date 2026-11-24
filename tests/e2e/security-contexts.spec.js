@@ -56,6 +56,7 @@ test("pack metadata stays text in options, groups, tags, descriptions and weight
     await expect(page.locator("#relative-preset optgroup").filter({ has: page.locator('[value="custom:security-contexts:tone"]') })).toHaveAttribute("label", `Imported: ${text}`);
     await page.getByRole("link", { name: "Chimes", exact: true }).click();
     await page.locator("#sound-profile").selectOption("custom:security-contexts:profile");
+    await page.locator("#sound-profile-apply").click();
     const first = page.locator(".interval-row").first();
     await openDetails(first.locator(".interval-advanced"));
     await expect(first.locator(".weight-control span")).toHaveText(text);

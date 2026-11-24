@@ -19,3 +19,9 @@ npm run tauri:dev
 The dev server uses port 5179 to keep its browser storage separate from the original app. The desktop bundle ID is `org.heartbeat.community.preview` and its product name is `Heartbeat Chime Community`; native data isolation has not yet been verified on a target machine. Avoid importing your primary data until that check is complete. `npm run package:macos` builds into a temporary directory and stages a durable app under ignored `artifacts/`; preserve any app you use before cleaning artifacts.
 
 For contributor scope and work remaining, see [roadmap](docs/ROADMAP.md) and [sync policy](docs/upstream-sync.md). Before publishing, select a code license and verify asset rights, privacy, security, and desktop behavior. Do not assume this candidate is ready for public redistribution.
+
+## Theme quick setup
+
+In **Chimes**, choose Machine shop, Public library, Japanese train station, or Restaurant and select **Apply quick setup**. Each theme enables the 1-, 5-, 15-, and 60-minute intervals and disables the 10- and 30-minute intervals; the description shows the impact before you apply. Sounds and weights for recurring intervals are replaced, while volumes, timers, imported audio and tags are retained. Nothing starts playing until you start chimes.
+
+**Undo last setup** restores the previous interval configuration during the current session. If you edit an interval assignment or its enabled state afterward, undo refuses to overwrite that edit. For a reusable or portable copy, use **Settings → Full backup** before changing your setup; named custom presets are not yet supported. Individual themed sounds can be previewed or mixed with other sounds, and their suggested interval tags can be changed in Sounds.

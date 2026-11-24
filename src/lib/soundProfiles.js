@@ -1,7 +1,9 @@
 import { BUILT_IN_VOICE_SET } from "./builtInVoices.js";
+import { THEMED_SOUNDS, THEMED_PROFILES } from "./themedSounds.js";
 
 export const PRESETS = [
   ...(BUILT_IN_VOICE_SET?.presets || []),
+  ...THEMED_SOUNDS,
   {
     id: "grand_bell",
     label: "Grand Bell",
@@ -42,6 +44,7 @@ export const SOUND_PROFILES = [
     relativeDefaultPresetId: "soft_chime",
     absoluteDefaultPresetId: "grand_bell"
   }] : []),
+  ...THEMED_PROFILES,
   {
     id: "clocktower",
     label: "Clocktower",
@@ -89,7 +92,7 @@ export const SOUND_PROFILES = [
   }
 ];
 
-export const DEFAULT_SOUND_PROFILE_ID = SOUND_PROFILES[0].id;
+export const DEFAULT_SOUND_PROFILE_ID = BUILT_IN_VOICE_SET ? "dry_time_checks" : "clocktower";
 
 export function getSoundProfileById(profileId) {
   return SOUND_PROFILES.find((profile) => profile.id === profileId) || SOUND_PROFILES[0];

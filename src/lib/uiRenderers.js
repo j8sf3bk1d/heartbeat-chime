@@ -140,10 +140,11 @@ export function createUiRenderers({
     const profileExists = profiles.some((profile) => profile.id === state.selectedProfileId);
     const missingOption = profileExists ? "" : `<option value="${escapeHtml(state.selectedProfileId)}">${escapeHtml(`Missing sound mode (${state.selectedProfileId})`)}</option>`;
     setSelectOptions(elements.soundProfile, profileOptions + missingOption);
-    elements.soundProfile.value = state.selectedProfileId;
-    elements.soundProfileDescription.textContent = profileExists
-      ? getCurrentProfile().description
-      : "This sound mode is missing. Reimport its pack or choose another mode.";
+    const draftId = runtime.soundProfileDraftId || state.selectedProfileId;
+    const draftProfile = profiles.find((profile) => profile.id === draftId);
+    elements.soundProfile.value = draftProfile ? draftId : state.selectedProfileId;
+    elements.soundProfileDescription.textContent = draftProfile?.description || (profileExists ? getCurrentProfile().description : "This sound mode is missing. Reimport its pack or choose another mode.");
+    elements.soundProfileUndo.disabled = !runtime.soundProfileUndo;
     elements.ttsEnabled.checked = state.ttsEnabled;
     elements.ttsSpeakLabel.checked = state.ttsSpeakLabel;
     elements.ttsRecurringEnabled.checked = state.ttsRecurringEnabled;
