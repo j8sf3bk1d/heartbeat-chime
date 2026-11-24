@@ -1,0 +1,21 @@
+.log-list {
+  margin-top: 0.75rem;
+  max-height: 220px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-log);
+}
+
+.log-item {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem 0.65rem;
+  border-top: 1px solid var(--line-soft);
+  font-size: 0.9rem;
+}
+
+.log-item:first-child {
+  border-top: 0;
+}

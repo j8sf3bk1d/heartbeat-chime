@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Character animation lab</title>
+  <link rel="stylesheet" href="/src/styles/companion.css">
+  <style>
+    html, body { overflow:auto; background:#efecf4; color:#21182d; font:16px system-ui,sans-serif; }
+    body { padding:20px; }
+    .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:16px; }
+    label { display:flex; flex-direction:column; gap:4px; }
+    select,button,input { font:inherit; }
+    .preview { width:min(900px,100%); height:420px; background:linear-gradient(135deg,#f8ecdd,#9aafd0); border-radius:12px; overflow:hidden; resize:both; }
+    .preview .companion { font-size:16px; }
+    /* Lab-only experiment: blend registered frames without scaling either. */
+    #mouth-mask-preview { position:absolute; inset:0; }
+    #mouth-mask-preview[data-wiggle="true"] #portrait-talk[data-opening="medium"][data-active="true"] { opacity:.5; }
+    #portrait-blink { -webkit-mask-image:radial-gradient(ellipse var(--eye-w,23%) var(--eye-h,9%) at var(--eye-x,50%) var(--eye-y,33%),#000 72%,transparent 100%); mask-image:radial-gradient(ellipse var(--eye-w,23%) var(--eye-h,9%) at var(--eye-x,50%) var(--eye-y,33%),#000 72%,transparent 100%); }
+  </style>
+</head>
+<body>
+  <h1>Character animation lab</h1>
+  <p>Disposable preview of the generated frames. Adjust masks and compare expression, blink and speech together.</p>
+  <div class="controls">
+    <label>Character <select id="character"><option value="heartbeat">Placeholder</option></select></label>
+    <label>Expression <select id="expression"></select></label>
+    <label>Blink <select id="blink"><option value="off">Off</option><option value="on">On</option><option value="auto" selected>Automatic</option></select></label>
+    <label>Mouth <select id="mouth"><option value="closed">Closed</option><option value="small">Small</option><option value="medium">Medium</option><option value="wide">Wide</option><option value="auto" selected>Automatic</option><option value="steady">Sustained: steady (current)</option><option value="wiggle">Sustained: soft blend (experiment)</option><option value="close-pulse">Sustained: base mouth pulse (experiment)</option><option value="blend">Soft blend: held for inspection</option></select></label>
+    <button id="replay">Replay entrance and exit</button>
+    <button id="export">Export prototype pack</button><button id="import">Import prototype pack</button><input type="file" id="file" accept="application/json,.json" hidden>
+  </div>
+  <p>Compare the sustained options, or hold the soft blend to inspect it for doubled lips. This simulation does not change the app.</p>
+  <p id="status" role="status">Prototype packs are only stored in this preview until exported.</p>
+  <div id="mask-controls" class="controls"></div>
+  <div class="preview"><main class="companion" data-phase="static" data-character-motion="true"><div class="dialogue"><span class="character-name">Heartbeat</span><div class="dialogue-content"><p id="dialogue-text">Another five minutes. Still working on that?</p></div></div><div class="portrait-shell"><div class="portrait-stack"><img id="portrait" alt="Character portrait"><img id="portrait-blink" class="portrait-layer" alt=""><span id="mouth-mask-preview"><img id="portrait-talk" class="portrait-layer" alt=""></span></div></div></main></div>
+  <script type="module" src="./preview.js"></script>
+</body>
+</html>

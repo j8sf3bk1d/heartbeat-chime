@@ -1,0 +1,5 @@
+# Working across the two repositories
+
+This repo began as a curated snapshot of the private Heartbeat source at commit `f69ccc0`. Its history starts independently so private history, assets, notes and credentials do not become public by accident. The repositories are separate; neither automatically mirrors the other.
+
+For a hardening or quality-of-life fix, implement and verify it in the relevant repo, identify the corresponding shared source and tests, then apply a reviewed patch in the other direction. Resolve differences deliberately: public bundle identity, icon, assets, documentation, tests and any future packaging may differ. Review every transferred file and its provenance before staging it; never cherry-pick private history blindly or copy local configuration, credentials, private art, recordings or generated build outputs. Run the affected tests in both repos. Record the source revision and any intentionally divergent behavior in the change's handoff. A shared core or automated sync may become worthwhile once boundaries settle; it is not established yet.

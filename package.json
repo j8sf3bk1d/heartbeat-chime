@@ -1,0 +1,31 @@
+{
+  "name": "heartbeat-chime-community",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5179 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "tauri:build:app": "tauri build --bundles app",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "vitest run --config vitest.unit.config.js",
+    "test:integration": "vitest run --config vitest.integration.config.js",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium",
+    "package:macos": "sh scripts/package-macos.sh",
+    "character:pack": "node scripts/character-pack.mjs"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "~2.12.5",
+    "@tauri-apps/plugin-autostart": "^2.5.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.0",
+    "@tauri-apps/cli": "~2.12.5",
+    "vite": "^6.4.2",
+    "vitest": "^4.1.6"
+  }
+}

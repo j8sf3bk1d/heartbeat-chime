@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heartbeat Chime</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div class="app-frame">
+      <aside class="sidebar">
+        <div class="brand">
+          <img src="/src-tauri/icons/icon.png" alt="" class="brand-icon" />
+          <div><h1>Heartbeat Chime</h1><p>Recurring voice timer cues</p></div>
+        </div>
+        <nav class="app-navigation" aria-label="Main navigation">
+          <a href="#overview" data-view-link="overview"><span aria-hidden="true">⌂</span>Overview</a>
+          <a href="#chimes" data-view-link="chimes"><span aria-hidden="true">♧</span>Chimes</a>
+          <a href="#sounds" data-view-link="sounds"><span aria-hidden="true">♫</span>Sounds</a>
+          <a href="#timers" data-view-link="timers"><span aria-hidden="true">◷</span>Timers</a>
+          <a href="#settings" data-view-link="settings"><span aria-hidden="true">⚙</span>Settings</a>
+        </nav>
+      </aside>
+      <main class="app-shell">
+      <header class="hero">
+        <div><h2 id="view-title">Overview</h2><p id="view-subtitle" class="subtitle">Set up and run your recurring chimes.</p></div>
+        <div class="clock-panel">
+          <p class="clock-label">Now</p><p id="clock" class="clock-value">--:--:--</p><p id="status-text" class="status-text">Paused</p>
+        </div>
+      </header>
+
+      <section id="storage-warning" class="card" role="alert" hidden>
+        <p id="storage-warning-message"></p>
+        <button id="storage-recovery-download" type="button" hidden>Download recovery copy</button>
+        <button id="storage-recovery-dismiss" type="button" hidden>Dismiss notice</button>
+      </section>
+
+      <section class="overview" id="chime-controls" data-view="overview">
+        <div class="overview-status">
+          <div class="status-copy"><h2 id="overview-heading">Chimes are paused</h2><p id="overview-message">Choose when you want to hear a chime, then press Start.</p><strong id="overview-count">No recurring chimes enabled</strong></div>
+          <button id="toggle-engine" class="status-symbol" type="button" aria-label="Start Chimes" title="Start Chimes">▶</button>
+        </div>
+        <p id="scheduler-error" class="scheduler-error" role="alert" hidden></p>
+        <div class="overview-volume"><label class="field-inline"><span>Master volume</span><input id="master-volume" type="range" min="0" max="1" step="0.05" /><span id="master-volume-value">75%</span></label></div>
+        <div class="overview-grid">
+          <section class="card getting-started">
+            <h2>Get Started</h2><p class="card-intro">Set up your chimes in a few simple steps.</p>
+            <a href="#sounds" data-view-link="sounds" class="setup-step"><span class="step-icon">1</span><span><strong>Import voice clips</strong><small>Add your own clips or use built-in sounds.</small></span><span aria-hidden="true">›</span></a>
+            <a href="#chimes" data-view-link="chimes" class="setup-step"><span class="step-icon">2</span><span><strong>Set up a chime</strong><small>Choose an interval and assign a sound.</small></span><span aria-hidden="true">›</span></a>
+            <div class="setup-step"><span class="step-icon">3</span><span><strong>Start chimes</strong><small>Keep Heartbeat open to hear your cues.</small></span></div>
+          </section>
+          <section class="card overview-chimes">
+            <div class="overview-card-heading"><h2>Your Chimes</h2><a href="#chimes" class="outline-link" data-view-link="chimes">Edit Chimes</a></div>
+            <div id="overview-intervals" class="overview-intervals"></div>
+          </section>
+        </div>
+        <section class="card quick-actions"><h2>Quick Actions</h2><div class="quick-actions-grid">
+          <a href="#sounds" data-view-link="sounds"><span aria-hidden="true">♫</span><strong>Import Sounds</strong><small>Add voice clips from your device</small></a>
+          <a href="#chimes" data-view-link="chimes"><span aria-hidden="true">♧</span><strong>Set Up Chimes</strong><small>Choose intervals and sounds</small></a>
+          <a href="#sounds" data-view-link="sounds"><span aria-hidden="true">▷</span><strong>Browse Sounds</strong><small>Find and preview a sound</small></a>
+          <a href="#timers" data-view-link="timers"><span aria-hidden="true">◷</span><strong>Timers</strong><small>Set a one-time reminder</small></a>
+        </div></section>
+        <div class="overview-footer"><p class="restart-note">By default, Heartbeat starts paused when reopened.</p></div>
+      </section>
+
+      <section class="card" id="sound-library" data-view="sounds">
+        <h2>Sound Library</h2>
+        <p class="card-intro">Bring your own voice clips or use the built-in sounds. Imported clips stay on this device.</p>
+        <form id="quick-pack-form" class="pack-form quick-pack-form">
+          <label>
+            <span>Collection name</span>
+            <input id="quick-pack-label" type="text" placeholder="My voice clips" required />
+          </label>
+          <label>
+            <span>Audio files</span>
+            <input id="quick-pack-files" type="file" multiple accept="audio/*" required />
+          </label>
+          <button type="submit">Import Clips</button>
+        </form>
+        <p id="quick-pack-status" class="import-status" role="status" aria-live="polite"></p>
+        <details id="sound-library-browser" class="disclosure sound-library-browser">
+          <summary>Browse Sounds</summary>
+          <div class="disclosure-body">
+            <label>
+              <span>Search sounds</span>
+              <input id="preset-search" type="search" placeholder="bell, soft, tick..." />
+            </label>
+            <label>
+              <span>Source</span>
+              <select id="preset-source-filter">
+                <option value="all">All sources</option>
+                <option value="built-in">Built-in only</option>
+                <option value="imported">Imported only</option>
+              </select>
+            </label>
+            <label>
+              <span>Applies to</span>
+              <select id="preset-interval-filter"><option value="all">Any interval</option><option value="untagged">Untagged</option><option value="1">1 minute</option><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="60">60 minutes</option></select>
+            </label>
+            <div id="preset-library" class="preset-library"></div>
+          </div>
+        </details>
+        <details class="disclosure pack-admin">
+          <summary>Manage collections and import a manifest</summary>
+          <div class="disclosure-body">
+            <p class="hint">
+              Advanced path: import a local pack with a <code>pack.json</code> manifest plus referenced audio files.
+            </p>
+            <form id="pack-import-form" class="pack-form manifest-pack-form">
+              <label>
+                <span>Pack files</span>
+                <input id="pack-files" type="file" multiple accept=".json,audio/*" required />
+              </label>
+              <button type="submit">Import Pack</button>
+            </form>
+            <div id="pack-list" class="pack-list"></div>
+          </div>
+        </details>
+      </section>
+
+      <section class="card" id="recurring-chimes" data-view="chimes">
+        <h2>Recurring Chimes</h2>
+        <p class="card-intro">
+          Turn on the intervals you want, then choose a sound for each one. Imported clips appear in the Sound menus.
+          Chimes follow the clock: for example, every 5 minutes at :00, :05, :10...
+        </p>
+        <div class="sound-mode-picker">
+          <label>
+            <span>Sound mode</span>
+            <select id="sound-profile"></select>
+          </label>
+          <div><p id="sound-profile-description" class="hint"></p><p class="hint">Changing sound mode replaces the sound choices for all recurring intervals.</p></div>
+        </div>
+        <p class="setup-path">Need your own voice clips? <a href="#sounds" data-view-link="sounds">Import sounds</a> first. Changes save automatically.</p>
+        <label class="field-inline suppress-row">
+          <input id="suppress-lower" type="checkbox" />
+          <span>Suppress lower intervals when multiple recurring cues coincide</span>
+        </label>
+        <label class="field-inline suppress-row">
+          <input id="avoid-random-repeat" type="checkbox" />
+          <span>Avoid repeating the same line or sound for each random recurring chime</span>
+        </label>
+        <div id="interval-grid" class="interval-grid"></div>
+      </section>
+
+      <section class="card timer-card" id="quick-timers" data-view="timers">
+        <h2>Quick Timers</h2>
+        <p class="card-intro">Use relative timers for fast reminders, or set a target time for one-off events.</p>
+        <p id="timers-paused-notice" class="timer-notice">Timers will not fire while chimes are paused. <a href="#overview" data-view-link="overview">Start chimes on Overview</a>.</p>
+        <div class="timer-forms">
+          <form id="relative-form" class="timer-form">
+            <h3>Add Relative Timer</h3>
+            <label>
+              Label
+              <input id="relative-label" type="text" placeholder="Stretch break" />
+            </label>
+            <label>
+              Minutes from now
+              <input id="relative-minutes" type="number" min="1" step="1" value="10" required />
+            </label>
+            <label>
+              Sound
+              <select id="relative-preset"></select>
+            </label>
+            <details class="disclosure form-advanced">
+              <summary>Advanced playback settings</summary>
+              <div class="disclosure-body form-advanced-fields">
+                <label>
+                  Playback
+                  <select id="relative-playback-mode">
+                    <option value="sequential" selected>Sequential</option>
+                    <option value="random">Random</option>
+                    <option value="weighted-random">Weighted Random</option>
+                  </select>
+                </label>
+                <label>
+                  Clip set (optional)
+                  <select id="relative-preset-set" class="preset-set-select" multiple size="4"></select>
+                </label>
+                <div class="weight-form-section">
+                  <span>Weights (per clip)</span>
+                  <div id="relative-preset-weight-controls" class="weight-control-grid"></div>
+                  <div id="relative-weight-preset-actions" class="weight-actions"></div>
+                  <button id="relative-weight-simulate" type="button" class="button-secondary">Sim 100</button>
+                  <p id="relative-weight-sim-output" class="weight-sim-output"></p>
+                </div>
+              </div>
+            </details>
+            <div class="timer-form-actions">
+              <button id="relative-preview" type="button" class="button-secondary">Preview</button>
+              <button type="submit">Add Relative Timer</button>
+            </div>
+          </form>
+
+          <form id="absolute-form" class="timer-form">
+            <h3>Add Target Time</h3>
+            <label>
+              Label
+              <input id="absolute-label" type="text" placeholder="Standup meeting" />
+            </label>
+            <label>
+              <span class="label-inline-action">
+                <span>Target time</span>
+                <button id="absolute-now" type="button" class="inline-link-button">(now)</button>
+              </span>
+              <input id="absolute-when" type="datetime-local" required />
+            </label>
+            <label>
+              Sound
+              <select id="absolute-preset"></select>
+            </label>
+            <details class="disclosure form-advanced">
+              <summary>Advanced playback settings</summary>
+              <div class="disclosure-body form-advanced-fields">
+                <label>
+                  Playback
+                  <select id="absolute-playback-mode">
+                    <option value="sequential" selected>Sequential</option>
+                    <option value="random">Random</option>
+                    <option value="weighted-random">Weighted Random</option>
+                  </select>
+                </label>
+                <label>
+                  Clip set (optional)
+                  <select id="absolute-preset-set" class="preset-set-select" multiple size="4"></select>
+                </label>
+                <div class="weight-form-section">
+                  <span>Weights (per clip)</span>
+                  <div id="absolute-preset-weight-controls" class="weight-control-grid"></div>
+                  <div id="absolute-weight-preset-actions" class="weight-actions"></div>
+                  <button id="absolute-weight-simulate" type="button" class="button-secondary">Sim 100</button>
+                  <p id="absolute-weight-sim-output" class="weight-sim-output"></p>
+                </div>
+              </div>
+            </details>
+            <div class="timer-form-actions">
+              <button id="absolute-preview" type="button" class="button-secondary">Preview</button>
+              <button type="submit">Add Target Timer</button>
+            </div>
+          </form>
+        </div>
+        <div id="timers-list" class="timers-list"></div>
+      </section>
+
+      <section class="card utilities-card" data-view="settings">
+        <h2>Preferences and Utilities</h2>
+        <p class="card-intro">Lower-frequency settings for visuals, desktop startup behavior, and config portability.</p>
+        <div class="utilities-grid">
+          <div class="utility-group">
+            <h3>Preferences</h3>
+            <div class="session-controls">
+              <label>
+                <span>Theme mode</span>
+                <select id="theme-mode"></select>
+              </label>
+              <label>
+                <span>Theme palette</span>
+                <select id="theme-palette"></select>
+              </label>
+            </div>
+            <div class="backup-controls" aria-labelledby="companion-title">
+              <h3 id="companion-title">Visual novel companion <small>Prototype</small></h3>
+              <p class="hint">Show the selected chime's line and expression without taking focus. Desktop only.</p>
+              <label class="field-inline"><input id="companion-enabled" type="checkbox" /><span>Show companion for chimes</span></label>
+              <label class="field-inline"><input id="companion-character-motion" type="checkbox" /><span>Animate character</span></label>
+              <p class="hint">Subtle blinking and speech motion. Your system's reduced-motion setting takes precedence.</p>
+              <label><span>Character</span><select id="companion-character"><option value="builtin">Heartbeat</option></select></label>
+              <label><span>Dialogue name</span><select id="companion-name-mode"><option value="default">Use character’s default name</option><option value="custom">Use a custom name</option></select></label>
+              <label><span>Custom name</span><input id="companion-custom-name" type="text" maxlength="40" autocomplete="off" placeholder="e.g. Kurisu" /></label>
+              <p class="hint">The custom name applies to every character until you switch back to the default. Leave it blank to use the character’s default.</p>
+              <div class="session-actions"><button type="button" id="character-import" class="button-secondary">Import character</button><button type="button" id="character-update" class="button-secondary" disabled>Update selected character</button><button type="button" id="character-export" class="button-secondary">Export character</button><input id="character-update-file" type="file" accept=".json,application/json" hidden><input id="character-file" type="file" accept=".json,application/json" hidden></div>
+              <p class="hint">Characters are saved on this device and included in full backups. Update selected character replaces that character with a new pack; import adds a separate character.</p>
+              <div class="session-controls">
+                <label><span>Display</span><select id="companion-monitor"><option value="primary">Primary display</option></select></label>
+                <label><span>Corner</span><select id="companion-corner"><option value="bottom-right">Bottom right</option><option value="bottom-left">Bottom left</option><option value="top-right">Top right</option><option value="top-left">Top left</option></select></label>
+                <label><span>Size</span><select id="companion-size"><option value="75">Small (75%)</option><option value="100">Medium (100%)</option><option value="125">Large (125%)</option><option value="150">Extra large (150%)</option></select></label>
+              </div>
+              <div class="session-actions"><button id="companion-preview" type="button" class="button-secondary">Preview companion</button><button id="companion-refresh" type="button" class="button-secondary">Refresh displays</button></div>
+              <p class="hint">Display, corner, and size apply the next time she appears.</p>
+              <p id="companion-status" class="hint" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+          <div class="utility-group">
+            <h3>Utilities</h3>
+            <div class="session-controls">
+              <label class="field-inline">
+                <input id="launch-at-login" type="checkbox" />
+                <span>Launch at login (desktop)</span>
+              </label>
+              <label class="field-inline"><input id="resume-on-launch" type="checkbox" /><span>Resume chimes when Heartbeat opens (desktop)</span></label>
+              <div class="desktop-health">
+                <p class="desktop-health-title">Desktop Health</p>
+                <div class="desktop-health-grid">
+                  <p class="desktop-health-row"><span>Runtime</span><strong id="desktop-runtime-value">Web browser</strong></p>
+                  <p class="desktop-health-row"><span>Tray bridge</span><strong id="desktop-tray-bridge-value">Unavailable</strong></p>
+                  <p class="desktop-health-row"><span>Startup sync</span><strong id="desktop-startup-value">Unavailable in browser</strong></p>
+                  <p class="desktop-health-row">
+                    <span>Last tray command</span>
+                    <strong id="desktop-last-tray-command-value">None yet</strong>
+                  </p>
+                </div>
+                <button id="desktop-status-refresh" type="button" class="button-secondary">Refresh Desktop Status</button>
+              </div>
+              <div class="backup-controls" aria-labelledby="backup-title">
+                <h3 id="backup-title">Full backup</h3>
+                <p class="hint">Save your settings, timers, imported sounds, characters, tags, and assignments together. Keep the backup somewhere private: it contains your audio.</p>
+                <div class="session-actions">
+                  <button id="backup-export" type="button" class="button-secondary">Create Backup</button>
+                  <button id="backup-import" type="button" class="button-secondary">Restore Backup</button>
+                  <input id="backup-import-file" type="file" accept="application/json,.json" hidden />
+                </div>
+                <p id="backup-status" class="hint" role="status" aria-live="polite"></p>
+              </div>
+              <div class="backup-controls">
+                <h3>Settings only</h3>
+                <p class="hint">Config exports do not include imported audio. Keep the original files; after restoring, reimport them and reassign your sounds.</p>
+                <div class="session-actions">
+                  <button id="config-export" type="button" class="button-secondary">Export Config</button>
+                  <button id="config-import" type="button" class="button-secondary">Import Config</button>
+                  <input id="config-import-file" type="file" accept="application/json,.json" hidden />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="card advanced-card" data-view="settings">
+        <h2>Advanced Controls</h2>
+        <p class="card-intro">Use these lower-frequency controls when tuning speech behavior and accessibility preferences.</p>
+        <details class="disclosure">
+          <summary>Audio timing diagnostics</summary>
+          <p class="hint">Heartbeat records each cue’s setup, playback scheduling and completion, along with timing changes and audio context transitions. No audio, filenames, or dialogue are logged. Timing estimates do not measure when sound reaches your speakers.</p>
+          <label class="field-inline"><input id="diagnostic-display-enabled" type="checkbox" /><span>Show diagnostic display</span></label><p id="diagnostic-display-status" class="hint">Shows cue identity and timing on the companion display. Line text appears on screen; enables timing history.</p>
+          <label class="field-inline"><input id="audio-log-enabled" type="checkbox" /><span>Record timing history</span></label>
+          <div id="audio-log-file-controls"><label for="audio-log-files">Maximum log files (1 MB each)</label> <select id="audio-log-files"><option value="2">2 files</option><option value="5">5 files</option><option value="10">10 files</option></select><p id="audio-log-path" class="hint">Locating log file…</p><p class="hint">Logs rotate when the current file fills. A lower limit takes effect at the next rotation. Turning recording off preserves existing logs.</p></div>
+          <p id="audio-log-mode" class="hint"></p>
+          <p id="audio-anomalies-status" class="hint" role="status"></p>
+          <p class="hint">Compare the same built-in voice through each playback path. Tests enable timing history and leave scheduled chimes unchanged. Native playback requires macOS.</p>
+          <div class="session-actions"><button id="audio-ab-web" type="button" class="button-secondary">Test Web Audio</button><button id="audio-ab-native" type="button" class="button-secondary">Test native audio</button></div>
+          <p id="audio-ab-status" class="hint" role="status">Ready for a comparison test.</p>
+          <label for="audio-anomalies-output">Latest 200 timeline entries and older flags (download for full history)</label>
+          <textarea id="audio-anomalies-output" rows="6" readonly spellcheck="false"></textarea>
+          <div class="session-actions"><button id="audio-anomalies-select" type="button" class="button-secondary">Select preview to copy</button><button id="audio-anomalies-download" type="button" class="button-secondary">Download cached history</button><button id="audio-anomalies-clear" type="button" class="button-secondary">Clear preview and older flags</button></div>
+          <p class="hint">Record timing metadata for voice clips during this session to investigate delays. No audio, filenames, or dialogue are collected. Records stay in memory and are cleared when disabled or Heartbeat closes. Output timing is an estimate, not a measurement of audible sound.</p>
+          <label class="field-inline"><input id="audio-diagnostics-enabled" type="checkbox" /><span>Record audio timing</span></label>
+          <p id="audio-diagnostics-status" class="hint" role="status">Recording off.</p>
+          <label for="audio-diagnostics-output">Timing samples (first and 99 most recent)</label>
+          <textarea id="audio-diagnostics-output" rows="8" readonly spellcheck="false"></textarea>
+          <button id="audio-diagnostics-select" type="button" class="button-secondary">Select samples to copy</button>
+        </details>
+        <details class="disclosure" id="tts-settings-panel">
+          <summary>Speech Settings (TTS)</summary>
+          <div class="disclosure-body">
+            <div class="tts-controls">
+              <label class="field-inline">
+                <input id="tts-enabled" type="checkbox" />
+                <span>Global TTS enabled</span>
+              </label>
+              <label class="field-inline">
+                <input id="tts-speak-label" type="checkbox" />
+                <span>Speak event label when no custom text</span>
+              </label>
+              <label class="field-inline">
+                <input id="tts-recurring-enabled" type="checkbox" />
+                <span>Speak recurring cues</span>
+              </label>
+              <label class="field-inline">
+                <input id="tts-one-shot-enabled" type="checkbox" />
+                <span>Speak one-shot timers</span>
+              </label>
+              <label>
+                <span>Speak this text (optional)</span>
+                <input id="tts-custom-text" type="text" placeholder="Time check" />
+              </label>
+              <label>
+                <span>Voice</span>
+                <select id="tts-voice"></select>
+              </label>
+              <label>
+                <span>Speech rate</span>
+                <input id="tts-rate" type="range" min="0.7" max="1.3" step="0.05" />
+                <span id="tts-rate-value">1.00x</span>
+              </label>
+              <label>
+                <span>Speech volume</span>
+                <input id="tts-volume" type="range" min="0" max="1" step="0.05" />
+                <span id="tts-volume-value">80%</span>
+              </label>
+              <div class="field-inline tts-actions">
+                <button id="tts-preview" type="button" class="button-secondary">Test voice</button>
+                <button id="tts-recurring-all-on" type="button" class="button-secondary">Recurring all on</button>
+                <button id="tts-recurring-all-off" type="button" class="button-secondary">Recurring all off</button>
+                <button id="tts-one-shot-all-on" type="button" class="button-secondary">Timers all on</button>
+                <button id="tts-one-shot-all-off" type="button" class="button-secondary">Timers all off</button>
+              </div>
+            </div>
+            <p id="tts-support-note" class="hint"></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="card log-card" data-view="settings">
+        <h2>Recent Chimes</h2>
+        <p class="card-intro">Review recent cue activity to confirm your schedule is behaving as expected.</p>
+        <div id="log-list" class="log-list"></div>
+      </section>
+
+      </main>
+    </div>
+
+    <dialog id="backup-confirm" aria-labelledby="backup-confirm-title" aria-describedby="backup-confirm-description">
+      <form method="dialog">
+        <h2 id="backup-confirm-title">Restore this backup?</h2>
+        <p id="backup-confirm-description">Settings and timers will be replaced. Imported sounds and characters will be added to your libraries. Launch at login stays unchanged on this device.</p>
+        <div class="session-actions"><button type="submit" value="cancel" class="button-secondary" autofocus>Cancel</button><button type="submit" value="restore">Restore backup</button></div>
+      </form>
+    </dialog>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

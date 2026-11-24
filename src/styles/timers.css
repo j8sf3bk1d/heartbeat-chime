@@ -1,0 +1,136 @@
+.timer-forms {
+  margin-top: 0.7rem;
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.timer-form {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.5rem;
+  background: var(--surface-soft);
+  min-width: 0;
+}
+
+.timer-form label,
+.timer-form input,
+.timer-form select {
+  min-width: 0;
+}
+
+.timer-form h3 {
+  font-size: 1rem;
+}
+
+.label-inline-action {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.inline-link-button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.inline-link-button:hover {
+  color: var(--accent-strong);
+}
+
+.timer-form button {
+  justify-self: start;
+}
+
+.timer-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.form-advanced-fields {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.timers-list {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.timer-item {
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 0.65rem;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.timer-active {
+  background: var(--surface-active);
+}
+
+.timer-finished {
+  background: var(--surface-finished);
+}
+
+.timer-title {
+  font-weight: 700;
+}
+
+.timer-meta {
+  margin-top: 0.15rem;
+  color: var(--muted);
+  font-size: 0.87rem;
+}
+
+.timer-actions {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.timer-sound-editor {
+  grid-column: 1 / -1;
+  border-top: 1px dashed var(--line-soft);
+  padding-top: 0.45rem;
+}
+
+.timer-sound-editor summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.87rem;
+}
+
+.timer-sound-editor-grid {
+  margin-top: 0.45rem;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+}
+
+.timer-progress {
+  grid-column: 1 / -1;
+  height: 0.36rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--progress-track);
+}
+
+.timer-progress-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+  transition: width 0.45s linear;
+}

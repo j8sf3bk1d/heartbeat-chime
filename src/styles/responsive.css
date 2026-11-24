@@ -1,0 +1,103 @@
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .clock-panel {
+    text-align: left;
+    min-width: 0;
+  }
+
+  .interval-advanced-body {
+    grid-template-columns: 1fr;
+  }
+
+  .timer-forms {
+    grid-template-columns: 1fr;
+  }
+
+  .timer-item {
+    grid-template-columns: 1fr;
+  }
+
+  .timer-sound-editor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tts-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .utilities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pack-form,
+  .pack-item {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-pack-form {
+    grid-template-columns: 1fr;
+  }
+
+  .desktop-health-row {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .interval-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .interval-toggle {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .clock-panel { text-align: right; }
+}
+
+@media (max-width: 600px) {
+  .app-navigation { flex-wrap: wrap; overflow: visible; }
+  .app-navigation a { flex: 1 1 auto; justify-content: center; padding: 0.55rem 0.6rem; }
+}
+@media (max-width: 800px) {
+  .app-frame { grid-template-columns: 170px minmax(0, 1fr); }
+  .sidebar { padding: 1.25rem 0.7rem; }
+  .brand-icon { width: 64px; height: 64px; }
+  .brand h1 { font-size: 1.05rem; }
+  .app-shell { padding: 1.5rem; }
+  .overview-grid { grid-template-columns: 1fr; }
+  .quick-actions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .app-frame { display: block; }
+  .sidebar { border-right: 0; border-bottom: 1px solid var(--line); padding: 0.75rem; }
+  .brand { display: flex; align-items: center; text-align: left; gap: 0.65rem; margin: 0 0 0.7rem; }
+  .brand-icon { width: 42px; height: 42px; margin: 0; border-radius: 11px; }
+  .brand p { font-size: 0.75rem; }
+  .app-navigation { display: flex; flex-wrap: wrap; gap: 0.15rem; }
+  .app-navigation a { flex: 1 1 auto; gap: 0.3rem; padding: 0.45rem; font-size: 0.8rem; }
+  .app-navigation a span { font-size: 1.1rem; width: auto; }
+  .app-shell { width: 100%; margin: 0; padding: 1rem; }
+  .hero h2 { font-size: 1.65rem; }
+  .hero .subtitle { display: block; font-size: 0.85rem; }
+  .overview-status { flex-wrap: wrap; }
+}

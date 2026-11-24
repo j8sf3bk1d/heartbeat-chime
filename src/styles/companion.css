@@ -1,0 +1,39 @@
+:root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #21182d; font-size: clamp(12px, 2.6667vw, 24px); }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; background: transparent; overflow: hidden; }
+.companion { position: relative; width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: flex-end; padding: .5rem; }
+.portrait-shell { height: 100%; width: 49%; display: flex; justify-content: flex-end; align-items: flex-end; }
+.portrait-stack { position: relative; height: 100%; aspect-ratio: var(--portrait-ratio, 1199 / 1312); max-width: 100%; transform-origin: 50% 95%; filter: drop-shadow(0 .375rem .625rem rgba(27, 13, 37, .25)); }
+.portrait-stack img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom right; }
+.portrait-layer { opacity: 0; pointer-events: none; }
+#portrait-blink { -webkit-mask-image: radial-gradient(ellipse var(--eye-w,18%) var(--eye-h,7%) at var(--eye-x,53%) var(--eye-y,34%), #000 72%, transparent 100%); mask-image: radial-gradient(ellipse var(--eye-w,18%) var(--eye-h,7%) at var(--eye-x,53%) var(--eye-y,34%), #000 72%, transparent 100%); }
+#portrait-talk { -webkit-mask-image: radial-gradient(ellipse calc(var(--mouth-w,7%) + 2%) calc(var(--mouth-h,3.5%) + 1%) at var(--mouth-x,55%) var(--mouth-y,44%), #000 80%, transparent 100%); mask-image: radial-gradient(ellipse calc(var(--mouth-w,7%) + 2%) calc(var(--mouth-h,3.5%) + 1%) at var(--mouth-x,55%) var(--mouth-y,44%), #000 80%, transparent 100%); transform-origin: var(--mouth-x,55%) var(--mouth-y,44%); }
+/* Keep the complete mouth patch at full size so the resting mouth is covered. */
+.portrait-layer[data-active="true"] { opacity: 1; }
+.dialogue { position: relative; z-index: 1; margin: 0 -1rem 1.375rem 0; width: 60%; border: max(1px, .125rem) solid #9d79bc; border-radius: .875rem; padding: 1.125rem 1.125rem .875rem; background: rgba(250, 242, 255, .96); box-shadow: 0 .3125rem 1.25rem rgba(37, 22, 50, .24); }
+.character-name { max-width: calc(100% - 1.5rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; position: absolute; top: -.8125rem; left: .75rem; background: #5e4493; color: #fff; border-radius: .4375rem; padding: .1875rem .625rem; font-size: max(10px, .75rem); font-weight: 700; }
+.dialogue p { font-size: 1rem; line-height: 1.35; margin: 0; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+.dialogue-content { display: grid; }
+.dialogue-content p { grid-area: 1 / 1; }
+#dialogue-measure { visibility: hidden; }
+
+/* The overlay is reusable: each cue resets these animations via its phase. */
+.companion[data-phase="hidden"] { opacity: 0; }
+.companion[data-phase="enter"] .portrait-shell { animation: character-in 360ms cubic-bezier(.2,.75,.25,1) both; }
+/* Keep the same animation alive as the parent shell starts sliding out: ending
+   it at the phase boundary snaps a mid-breath portrait back to scale(1). */
+.companion:is([data-phase="enter"], [data-phase="exit"])[data-character-motion="true"] .portrait-stack { animation: character-breathe 3.8s ease-in-out infinite; }
+.companion[data-phase="enter"] .dialogue { animation: dialogue-in 260ms 100ms ease-out both; }
+.companion[data-phase="exit"] #dialogue-text { animation: text-out 180ms ease-in both; }
+.companion[data-phase="exit"] .dialogue { animation: dialogue-out 220ms 160ms ease-in both; }
+.companion[data-phase="exit"] .portrait-shell { animation: character-out 300ms 280ms ease-in both; }
+@keyframes character-in { from { opacity: 0; transform: translateX(15%); } to { opacity: 1; transform: translateX(0); } }
+@keyframes character-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.007, 1.012); } }
+@keyframes dialogue-in { from { opacity: 0; transform: scaleX(.12); } to { opacity: 1; transform: scaleX(1); } }
+@keyframes text-out { to { opacity: 0; clip-path: inset(0 0 0 100%); } }
+@keyframes dialogue-out { to { opacity: 0; transform: scaleX(.12); } }
+@keyframes character-out { to { opacity: 0; transform: translateX(15%); } }
+@media (prefers-reduced-motion: reduce) {
+  .companion[data-phase] .portrait-shell, .companion[data-phase] .portrait-stack, .companion[data-phase] .dialogue, .companion[data-phase] #dialogue-text { animation: none; }
+  .companion:is([data-phase="enter"], [data-phase="exit"])[data-character-motion="true"] .portrait-stack { animation: none; }
+}

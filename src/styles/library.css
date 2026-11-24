@@ -1,0 +1,117 @@
+.sound-library-browser {
+  margin-top: 0.75rem;
+}
+
+.preset-library {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.preset-group {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.preset-group-title {
+  font-size: 0.83rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.preset-group-count {
+  margin-left: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--accent-strong);
+}
+
+.pack-form {
+  margin-top: 0.7rem;
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+}
+
+.quick-pack-form {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+}
+
+.pack-form label, .pack-form input, .preset-item > div, .preset-interval-tags input { min-width: 0; max-width: 100%; }
+
+.manifest-pack-form {
+  margin-top: 0.35rem;
+}
+
+.pack-list {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.pack-item {
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 0.65rem;
+  background: var(--surface-soft);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.pack-title {
+  font-weight: 700;
+}
+
+.pack-meta {
+  margin-top: 0.12rem;
+  color: var(--muted);
+  font-size: 0.87rem;
+}
+
+.preset-item {
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 0.65rem;
+  background: var(--surface-soft);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.preset-title {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.preset-interval-tags { display: grid; gap: 0.2rem; margin-top: 0.5rem; max-width: 18rem; }
+.preset-interval-tags span, .preset-interval-tags small { color: var(--muted); font-size: 0.78rem; }
+
+.preset-meta {
+  margin-top: 0.12rem;
+  color: var(--muted);
+  font-size: 0.87rem;
+}
+
+.preset-tags {
+  margin-top: 0.24rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.preset-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-soft);
+  background: var(--surface-subtle);
+  color: var(--muted);
+  font-size: 0.72rem;
+}

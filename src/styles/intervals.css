@@ -1,0 +1,126 @@
+.interval-grid {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.suppress-row {
+  margin-top: 0.7rem;
+}
+
+.interval-row {
+  border: 1px solid var(--line);
+  background: var(--surface-subtle);
+  border-radius: 12px;
+  padding: 0.7rem;
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: minmax(7rem, 1fr) minmax(0, 2fr) auto;
+  align-items: center;
+}
+
+.interval-row label {
+  min-width: 0;
+}
+
+.interval-row select {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.interval-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.interval-advanced {
+  grid-column: 1 / -1;
+  margin-top: 0.1rem;
+}
+
+.interval-advanced-body {
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  align-items: start;
+}
+
+.interval-advanced-body .weight-editor {
+  grid-column: 1 / -1;
+}
+
+.preset-set-select {
+  min-height: 5rem;
+}
+
+.interval-advanced .preset-set-select {
+  min-height: 10.5rem;
+}
+
+.weight-form-section {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.weight-editor {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.weight-control-grid {
+  display: grid;
+  min-width: 0;
+  gap: 0.4rem 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}
+
+.weight-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 5rem;
+  align-items: center;
+  min-width: 0;
+  gap: 0.6rem;
+}
+
+.weight-control span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.weight-control input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.3rem 0.4rem;
+}
+
+.weight-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.weight-actions button {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+.weight-sim-output {
+  min-height: 1rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.sound-mode-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: end;
+  margin-top: 0.8rem;
+}
+.sound-mode-picker select { min-width: 11rem; }
+.sound-mode-picker .hint { font-size: 0.82rem; }

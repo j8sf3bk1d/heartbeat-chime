@@ -1,0 +1,7 @@
+{
+  "format": "heartbeat-character-source",
+  "version": 1,
+  "name": "Example Character",
+  "masks": {"eye-x": 50, "eye-y": 33, "eye-w": 23, "eye-h": 9, "mouth-x": 50, "mouth-y": 42, "mouth-w": 8, "mouth-h": 4},
+  "frames": {"neutral": {"base": "neutral.png"}}
+}

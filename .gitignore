@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+test-results/
+playwright-report/
+
+# Durable packaged apps; preserve any bundles you still use.
+artifacts/

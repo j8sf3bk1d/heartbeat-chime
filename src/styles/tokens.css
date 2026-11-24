@@ -1,0 +1,152 @@
+:root {
+  color-scheme: light;
+  --bg-top: #f8f3e9;
+  --bg-bottom: #d4dde8;
+  --glow-a: rgba(255, 235, 170, 0.5);
+  --glow-b: rgba(86, 175, 188, 0.24);
+  --card: rgba(255, 251, 244, 0.86);
+  --surface-panel: rgba(250, 246, 239, 0.8);
+  --surface-subtle: rgba(255, 249, 240, 0.84);
+  --surface-soft: rgba(255, 250, 243, 0.82);
+  --surface-active: rgba(227, 245, 246, 0.65);
+  --surface-finished: rgba(239, 235, 226, 0.8);
+  --surface-log: rgba(255, 249, 239, 0.72);
+  --ink: #252019;
+  --muted: #5b554b;
+  --accent: #135f63;
+  --accent-strong: #0b4649;
+  --accent-text: #f7f4ef;
+  --line: #cdbfa6;
+  --line-soft: rgba(189, 169, 138, 0.38);
+  --input-bg: #fdf9f3;
+  --progress-track: rgba(115, 104, 88, 0.24);
+  --status-idle: #8b5630;
+  --shadow: 0 9px 20px rgba(42, 36, 26, 0.08);
+}
+
+body[data-theme-mode="dark"] {
+  color-scheme: dark;
+  --bg-top: #1e242b;
+  --bg-bottom: #12161a;
+  --glow-a: rgba(79, 118, 161, 0.26);
+  --glow-b: rgba(46, 148, 137, 0.2);
+  --card: rgba(24, 30, 35, 0.9);
+  --surface-panel: rgba(31, 37, 43, 0.9);
+  --surface-subtle: rgba(38, 45, 52, 0.92);
+  --surface-soft: rgba(42, 49, 57, 0.92);
+  --surface-active: rgba(29, 65, 72, 0.78);
+  --surface-finished: rgba(49, 54, 60, 0.88);
+  --surface-log: rgba(29, 34, 39, 0.9);
+  --ink: #f2efe8;
+  --muted: #c1bfb8;
+  --line: #3f4a55;
+  --line-soft: rgba(101, 112, 125, 0.46);
+  --input-bg: #202a32;
+  --progress-track: rgba(134, 149, 166, 0.32);
+  --status-idle: #e1a56a;
+  --shadow: 0 10px 24px rgba(5, 8, 10, 0.35);
+}
+
+body[data-theme-palette="dawn"] {
+  --accent: #135f63;
+  --accent-strong: #0b4649;
+}
+
+body[data-theme-palette="tide"] {
+  --accent: #0c4d70;
+  --accent-strong: #083852;
+}
+
+body[data-theme-palette="ember"] {
+  --accent: #7a3b1f;
+  --accent-strong: #582915;
+}
+
+body[data-theme-mode="light"][data-theme-palette="tide"] {
+  --bg-top: #ecf6fb;
+  --bg-bottom: #d6e4ef;
+  --glow-a: rgba(150, 203, 232, 0.45);
+  --glow-b: rgba(71, 144, 199, 0.22);
+}
+
+body[data-theme-mode="light"][data-theme-palette="ember"] {
+  --bg-top: #f9efe5;
+  --bg-bottom: #e4d5cb;
+  --glow-a: rgba(255, 193, 140, 0.36);
+  --glow-b: rgba(182, 89, 52, 0.2);
+}
+
+body[data-theme-mode="dark"][data-theme-palette="tide"] {
+  --bg-top: #172330;
+  --bg-bottom: #101924;
+  --glow-a: rgba(43, 138, 196, 0.32);
+  --glow-b: rgba(60, 184, 207, 0.16);
+  --accent: #3e98cb;
+  --accent-strong: #7ac5ef;
+  --accent-text: #081420;
+}
+
+body[data-theme-mode="dark"][data-theme-palette="ember"] {
+  --bg-top: #2e1f19;
+  --bg-bottom: #1b1411;
+  --glow-a: rgba(184, 104, 62, 0.32);
+  --glow-b: rgba(207, 137, 66, 0.16);
+  --accent: #be7045;
+  --accent-strong: #e7a57d;
+  --accent-text: #1b0f0a;
+}
+
+body[data-theme-mode="dark"][data-theme-palette="dawn"] {
+  --accent: #2f8f97;
+  --accent-strong: #71cad1;
+  --accent-text: #071216;
+}
+
+body[data-theme-mode="light"][data-theme-palette="lilac"] {
+  --bg-top: #f1f0f8;
+  --bg-bottom: #e8e8f1;
+  --glow-a: rgba(194, 184, 231, 0.28);
+  --glow-b: rgba(173, 200, 217, 0.18);
+  --card: #fcfbfe;
+  --surface-panel: #eeedf6;
+  --surface-subtle: #f5f4fa;
+  --surface-soft: #ffffff;
+  --surface-active: #eeebfa;
+  --surface-finished: #eeedf3;
+  --surface-log: #f5f4fa;
+  --ink: #252333;
+  --muted: #605d70;
+  --accent: #6045a8;
+  --accent-strong: #493483;
+  --accent-text: #ffffff;
+  --line: #d6d3e0;
+  --line-soft: #e3e1eb;
+  --input-bg: #ffffff;
+  --progress-track: #d6d1e4;
+  --status-idle: #8a5822;
+  --shadow: 0 8px 24px rgba(40, 34, 69, 0.06);
+}
+body[data-theme-mode="dark"][data-theme-palette="lilac"] {
+  --bg-top: #211e2d;
+  --bg-bottom: #15141c;
+  --glow-a: rgba(110, 91, 166, 0.2);
+  --glow-b: rgba(60, 111, 132, 0.12);
+  --card: #242230;
+  --surface-panel: #2b2938;
+  --surface-subtle: #302e3d;
+  --surface-soft: #383545;
+  --surface-active: #38304d;
+  --surface-finished: #302e37;
+  --surface-log: #2a2835;
+  --ink: #f2eff9;
+  --muted: #c5c0d1;
+  --accent: #b49ae9;
+  --accent-strong: #d1bdf8;
+  --accent-text: #21152f;
+  --line: #4a465a;
+  --line-soft: #454151;
+  --input-bg: #252330;
+  --progress-track: #575167;
+  --status-idle: #e4b887;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
