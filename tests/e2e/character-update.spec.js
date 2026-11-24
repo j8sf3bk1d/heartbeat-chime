@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 
 const masks = {'eye-x':50,'eye-y':33,'eye-w':23,'eye-h':9,'mouth-x':50,'mouth-y':42,'mouth-w':8,'mouth-h':4};
 async function makePack(name, image = 'neutral.png') {
-  const png = await readFile((image === "neutral.png" ? "src/assets/companion/neutral.png" : "src-tauri/icons/128x128.png"));
+  const png = await readFile((image === "neutral.png" ? "examples/character/neutral.png" : "src-tauri/icons/128x128.png"));
   return {format:'heartbeat-character-prototype',version:1,name,masks,frames:{neutral:{base:`data:image/png;base64,${png.toString('base64')}`}}};
 }
 const file = pack => ({name:'character.json', mimeType:'application/json', buffer:Buffer.from(JSON.stringify(pack))});

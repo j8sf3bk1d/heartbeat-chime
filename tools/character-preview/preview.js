@@ -19,13 +19,13 @@ for (const [key,value] of Object.entries(defaults)) {
   label.append(input); controls.append(label);
 }
 function setExpression() {
-  const path = `/src/assets/companion/neutral`;
+  const path = `/src/assets/companion/${expression.value}`;
   const selected = character.value === "imported" ? imported : null;
   const frame = selected ? (selected.frames[expression.value] || selected.frames.neutral) : null;
   base.src = frame ? frame.base : `${path}.png`;
   const layers = selected ? selected.frames[expression.value] : null;
-  blinkSource = selected ? (layers?.blink || "") : "";
-  talkSource = selected ? (layers?.talk || "") : "";
+  blinkSource = selected ? (layers?.blink || "") : `${path}-blink.png`;
+  talkSource = selected ? (layers?.talk || "") : `${path}-talk.png`;
   updateBlinkLayer("", false); updateTalkLayer("", false);
   eyes.hidden = !blinkSource; lips.hidden = !talkSource;
   document.querySelector(".character-name").textContent = selected?.name || "Heartbeat";
@@ -60,7 +60,11 @@ document.querySelector("#export").addEventListener("click", async () => {
     status.textContent = "Preparing pack…";
     const frames = {};
     if (character.value === "imported") Object.assign(frames, imported.frames);
-    else frames.neutral = {base: await toDataUrl("/src/assets/companion/neutral.png")};
+    else for (const id of expressions) {
+      const path = `/src/assets/companion/${id}`;
+      const [base, blink, talk] = await Promise.all([toDataUrl(`${path}.png`), toDataUrl(`${path}-blink.png`), toDataUrl(`${path}-talk.png`)]);
+      frames[id] = {base, blink, talk};
+    }
     const masks = Object.fromEntries([...controls.querySelectorAll("input")].map(input => [input.parentElement.firstChild.textContent,Number(input.value)]));
     const pack = validateCharacterPack({format:"heartbeat-character-prototype",version:1,name:character.value === "imported" ? imported.name : "Heartbeat",masks,frames});
     const url = URL.createObjectURL(new Blob([JSON.stringify(pack)], {type:"application/json"}));

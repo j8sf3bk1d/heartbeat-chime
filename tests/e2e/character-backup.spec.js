@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 
 const masks = {"eye-x":50,"eye-y":33,"eye-w":23,"eye-h":9,"mouth-x":50,"mouth-y":42,"mouth-w":8,"mouth-h":4};
 async function makePack(name) {
-  const png = await readFile("src/assets/companion/neutral.png");
+  const png = await readFile("examples/character/neutral.png");
   return {format:"heartbeat-character-prototype",version:1,name,masks,frames:{neutral:{base:`data:image/png;base64,${png.toString("base64")}`}}};
 }
 async function addCharacter(page, pack) {
@@ -101,7 +101,7 @@ test("full 24-frame character pack survives a complete backup roundtrip", async 
   for (const name of names) {
     pack.frames[name] = {};
     for (const [mode,suffix] of [["base",""],["blink","-blink"],["talk","-talk"]]) {
-      const data = await readFile("src/assets/companion/neutral.png");
+      const data = await readFile("examples/character/neutral.png");
       pack.frames[name][mode] = `data:image/png;base64,${data.toString("base64")}`;
     }
   }

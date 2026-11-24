@@ -2,7 +2,7 @@
 
 Heartbeat is a local desktop chime app with customizable schedules, imported sounds, a visual-novel-style companion, character packs and portable backup. This sibling is an early public-source candidate, not yet a public release. It has no configured Git remote.
 
-It includes synthesized chimes and the existing spoken pack. A generic placeholder stands in for the private character artwork; you can import your own character pack in Settings. The [agent-assisted creator kit](docs/character-creator/README.md) explains how to create one. Character packs currently change appearance, not the voice or dialogue.
+It includes synthesized chimes and the existing spoken pack. Heartbeat’s original character is included; you can also import your own character pack in Settings. The [agent-assisted creator kit](docs/character-creator/README.md) explains how to create one. Character packs currently change appearance, not the voice or dialogue.
 
 ## Develop
 

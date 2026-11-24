@@ -8,7 +8,7 @@ let dir;
 const masks = {'eye-x':50,'eye-y':33,'eye-w':23,'eye-h':9,'mouth-x':50,'mouth-y':42,'mouth-w':8,'mouth-h':4};
 const source = () => ({format:'heartbeat-character-source',version:1,name:'Example',masks,frames:{neutral:{base:'neutral.png'}}});
 async function manifest(value) { const p = path.join(dir, 'source.json'); await writeFile(p, JSON.stringify(value)); return p; }
-beforeEach(async () => { dir = await mkdtemp(path.join(tmpdir(), 'heartbeat-creator-')); await copyFile('src/assets/companion/neutral.png', path.join(dir, 'neutral.png')); });
+beforeEach(async () => { dir = await mkdtemp(path.join(tmpdir(), 'heartbeat-creator-')); await copyFile('examples/character/neutral.png', path.join(dir, 'neutral.png')); });
 afterEach(async () => { await rm(dir, {recursive:true, force:true}); });
 describe('character creator', () => {
   it('builds a pack accepted by the app validator and reads the result back', async () => {

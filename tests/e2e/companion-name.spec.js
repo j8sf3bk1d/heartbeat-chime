@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 
 test('custom dialogue name persists, reaches the running overlay and is included in backups', async ({page,context,browser}) => {
   await page.goto('/#settings');
-  const png = await readFile('src/assets/companion/neutral.png');
+  const png = await readFile('examples/character/neutral.png');
   const pack = {format:'heartbeat-character-prototype',version:1,name:'Pack description',masks:{'eye-x':50,'eye-y':33,'eye-w':23,'eye-h':9,'mouth-x':50,'mouth-y':42,'mouth-w':8,'mouth-h':4},frames:{neutral:{base:`data:image/png;base64,${png.toString('base64')}`}}};
   await page.locator('#character-file').setInputFiles({name:'pack.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(pack))});
   await expect(page.locator('#companion-status')).toContainText('imported');
