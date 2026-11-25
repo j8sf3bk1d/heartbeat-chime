@@ -2,6 +2,8 @@
 
 This kit takes a character description through artwork, animation frames, mask tuning, validation, and an importable Heartbeat character JSON. It is intended for an agent with image-generation and visual-review capabilities; you do not need to draw or hand-label every image. The current format is a local prototype, not yet a stable public pack contract.
 
+To create or import audio alongside your character, see [voice and sound generation](audio-generation.md). Visual packs and imported voice clips remain independent; custom dialogue and expression mapping are future work.
+
 ## Start in a fresh agent chat
 
 Open this repository in the chat and paste:

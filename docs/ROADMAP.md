@@ -7,5 +7,6 @@ This is a free, as-is reference project. Source sharing and supported binary rel
 - Keep the existing voice pack and synthesized chimes; consider an additional brighter voice pack with previews and clear tone choices.
 - The four owner-auditioned sound-effect themes now have tagged built-in clips and reversible quick setup. Keep provider provenance with the assets; add reusable named user presets if needed.
 - Develop character-specific voice-pack metadata and creation flows; character visuals, sound selection and assignments remain independently switchable. See character-creator/voice-packs.md.
+- Maintain the [illustrated user guide](user-guide.md) and [voice and sound generation guide](character-creator/audio-generation.md) as screens and provider APIs change; keep API credentials outside the project.
 - Expand character animation and lab coverage with purpose-made distributable full-expression fixtures; the included example is a still image only.
 - Maintain the public source as a free reference project. Code uses MIT; media and third-party terms remain separate.

@@ -15,4 +15,6 @@ This workflow is provider-neutral. An agent should:
 
 Character creation uses the [creator kit](../character-creator/README.md). If the current agent is Codex and its image-generation capability or skill is available, it can generate and review character assets under the applicable tool instructions. Other agents should inspect their own available image-generation and visual-review capabilities; do not assume a particular provider, product or tool exists. If needed capabilities are absent, explain the gap and proceed with user-provided art or a manifest/checklist instead of claiming generated assets or visual review.
 
+For authored audio, use the [voice and sound generation guide](../character-creator/audio-generation.md), including the current import limits and optional ElevenLabs workflow. Never search sibling projects for credentials or assume permission to spend on a provider account. Everyday setup is covered in the [user guide](../user-guide.md).
+
 The optional repo-native practices are informed by [Embedded Delivery OS](https://github.com/j8sf3bk1d/embedded-delivery-os). No particular agent platform is required.

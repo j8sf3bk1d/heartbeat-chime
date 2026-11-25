@@ -12,6 +12,8 @@ Heartbeat is a local-first chime app for your desktop, with customizable sounds,
 
 Character packs currently change appearance, not the voice or dialogue. Heartbeat is a free, as-is reference project; native release and platform checks are still in progress.
 
+New to Heartbeat? Start with the illustrated [user guide](docs/user-guide.md). To create your own audio, see [voice and sound generation](docs/character-creator/audio-generation.md).
+
 ## Start with an agent
 
 Open this repository in your preferred agentic tool and say: “Existing repo: read the cold-start guidance, then help me start working on Heartbeat.” The provider-neutral [cold-start guide](docs/process/cold-start.md) explains what to read, how to preserve existing work, and how to coordinate changes.
