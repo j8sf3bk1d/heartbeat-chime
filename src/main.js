@@ -981,6 +981,7 @@ registerLibraryHandlers({
   presetSearch: elements.presetSearch,
   presetSourceFilter: elements.presetSourceFilter,
   presetIntervalFilter: document.getElementById("preset-interval-filter"),
+  presetTagFilter: document.getElementById("preset-tag-filter"),
   presetLibrary: elements.presetLibrary,
   packImportForm: elements.packImportForm,
   packFiles: elements.packFiles,

@@ -43,6 +43,8 @@ In **Chimes**, choose Machine shop, Public library, Japanese train station, or R
 
 **Undo last setup** restores the previous interval configuration during the current session. If you edit an interval assignment or its enabled state afterward, undo refuses to overwrite that edit. For a reusable or portable copy, use **Settings → Full backup** before changing your setup; named custom presets are not yet supported. Individual themed sounds can be previewed or mixed with other sounds, and their suggested interval tags can be changed in Sounds.
 
+In **Sounds → Browse Sounds**, search by name or filter by source, interval, and sound tag. Filtering only changes the displayed list; it does not change assignments or saved tags.
+
 ## License
 
 Original code and documentation are under the [MIT License](LICENSE). Media and third-party dependencies have separate terms; see [license scope](LICENSE-CONTENT.md).

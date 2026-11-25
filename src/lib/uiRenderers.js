@@ -260,6 +260,7 @@ export function createUiRenderers({
       { value: "all", label: "All sources" },
       { value: "built-in", label: "Built-in only" },
       { value: "imported", label: "Imported only" },
+      ...[...new Set(getAllPresets().filter((preset) => isBuiltInPresetId(preset.id) && preset.sourceTheme).map((preset) => preset.sourceTheme))].sort((a, b) => a.localeCompare(b)).map((theme) => ({ value: `theme:${theme}`, label: `Theme: ${theme}` })),
       ...customLibrary.packs.map((pack) => ({ value: `pack:${pack.id}`, label: `Pack: ${pack.label}` }))
     ];
     elements.presetSourceFilter.innerHTML = sourceOptions
@@ -275,6 +276,11 @@ export function createUiRenderers({
     intervalSelector.innerHTML = '<option value="all">Any interval</option><option value="untagged">Untagged</option>' +
       allMinutes.map((minutes) => `<option value="${minutes}">${minutes} minute${minutes === 1 ? "" : "s"}</option>`).join("");
     intervalSelector.value = [...intervalSelector.options].some((option) => option.value === previousInterval) ? previousInterval : "all";
+    const tagSelector = document.getElementById("preset-tag-filter");
+    const previousTag = tagSelector.value || "__all__";
+    const tags = [...new Set(getAllPresets().flatMap((preset) => Array.isArray(preset.tags) ? preset.tags.filter((tag) => typeof tag === "string" && tag.trim()) : []))].sort((a, b) => a.localeCompare(b));
+    tagSelector.innerHTML = '<option value="__all__">Any tag</option>' + tags.map((tag) => `<option value="${escapeHtml(tag)}">${escapeHtml(tag)}</option>`).join("");
+    tagSelector.value = tags.includes(previousTag) ? previousTag : "__all__";
     const query = elements.presetSearch.value.trim().toLowerCase();
     const sourceFilter = elements.presetSourceFilter.value;
     const intervalFilter = document.getElementById("preset-interval-filter").value;
@@ -285,6 +291,8 @@ export function createUiRenderers({
       if (intervalFilter === "untagged" && intervalTags.length) return false;
       if (intervalFilter !== "all" && intervalFilter !== "untagged" && !intervalTags.includes(Number(intervalFilter))) return false;
       const builtIn = isBuiltInPresetId(preset.id);
+      if (tagSelector.value !== "__all__" && !(preset.tags || []).includes(tagSelector.value)) return false;
+      if (sourceFilter.startsWith("theme:") && (!builtIn || preset.sourceTheme !== sourceFilter.slice(6))) return false;
       if (sourceFilter === "built-in" && !builtIn) {
         return false;
       }
@@ -297,10 +305,11 @@ export function createUiRenderers({
       if (!query) {
         return true;
       }
-      const haystack = `${preset.label} ${preset.description || ""} ${(preset.tags || []).join(" ")}`.toLowerCase();
+      const haystack = `${preset.label} ${preset.description || ""} ${preset.sourceTheme || ""} ${builtIn ? "" : getPackLabel(preset.packId)} ${(preset.tags || []).join(" ")}`.toLowerCase();
       return haystack.includes(query);
     });
 
+    document.getElementById("preset-results-count").textContent = `${filtered.length} of ${getAllPresets().length} sounds`;
     if (!filtered.length) {
       elements.presetLibrary.innerHTML = `<p class="hint">No sounds match your search.</p>`;
       return;
@@ -309,8 +318,8 @@ export function createUiRenderers({
     const grouped = new Map();
     for (const preset of filtered) {
       const builtIn = isBuiltInPresetId(preset.id);
-      const groupKey = builtIn ? "__built-in__" : `pack:${preset.packId || "imported"}`;
-      const groupLabel = builtIn ? "Built-in Sounds" : `Imported Pack · ${getPackLabel(preset.packId)}`;
+      const groupKey = builtIn ? (preset.sourceTheme ? `theme:${preset.sourceTheme}` : "__built-in__") : `pack:${preset.packId || "imported"}`;
+      const groupLabel = builtIn ? (preset.sourceTheme ? `Theme · ${preset.sourceTheme}` : "Built-in Sounds") : `Imported Pack · ${getPackLabel(preset.packId)}`;
       if (!grouped.has(groupKey)) {
         grouped.set(groupKey, { key: groupKey, label: groupLabel, presets: [] });
       }
@@ -341,14 +350,14 @@ export function createUiRenderers({
               ? `<p class="preset-tags">${tags.map((tag) => `<span class="preset-tag">${escapeHtml(tag)}</span>`).join("")}</p>`
               : "";
             return `
-              <article class="preset-item">
-                <div>
+              <article class="preset-item" role="row">
+                <div class="preset-info" role="cell">
                   <p class="preset-title">${escapeHtml(preset.label)}</p>
                   <p class="preset-meta">${escapeHtml(preset.description || "No description")} • ${escapeHtml(sourceText)}</p>
                   ${tagsMarkup}
-                  <label class="preset-interval-tags"><span>Applies to (minutes)</span><input class="preset-interval-input" data-preset-id="${escapeHtml(preset.id)}" aria-label="Minutes for ${escapeHtml(preset.label)}" value="${soundIntervalTags(preset, state.soundIntervalTags).join(", ")}" placeholder="e.g. 1, 5, 15" inputmode="numeric" /><small>Optional; comma-separated</small></label>
                 </div>
-                <button type="button" class="button-secondary preset-preview" data-preset-id="${escapeHtml(preset.id)}">Preview</button>
+                <label class="preset-interval-tags" role="cell"><span>Minutes</span><input class="preset-interval-input" data-preset-id="${escapeHtml(preset.id)}" aria-label="Minutes for ${escapeHtml(preset.label)}" value="${soundIntervalTags(preset, state.soundIntervalTags).join(", ")}" placeholder="e.g. 1, 5, 15" inputmode="numeric" /></label>
+                <div class="preset-action" role="cell"><button type="button" class="button-secondary preset-preview" data-preset-id="${escapeHtml(preset.id)}" aria-label="Preview ${escapeHtml(preset.label)}">Preview</button></div>
               </article>
             `;
           })
@@ -356,7 +365,10 @@ export function createUiRenderers({
         return `
           <section class="preset-group">
             <p class="preset-group-title">${escapeHtml(group.label)} <span class="preset-group-count">${group.presets.length}</span></p>
-            ${items}
+            <div class="preset-table" role="table" aria-label="${escapeHtml(group.label)}">
+              <div class="preset-table-heading" role="row"><span role="columnheader">Sound</span><span role="columnheader">Applies to (minutes)</span><span role="columnheader">Listen</span></div>
+              ${items}
+            </div>
           </section>
         `;
       })

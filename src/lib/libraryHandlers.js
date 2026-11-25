@@ -17,6 +17,7 @@ export function registerLibraryHandlers({
   presetSearch,
   presetSourceFilter,
   presetIntervalFilter,
+  presetTagFilter,
   presetLibrary,
   packImportForm,
   packFiles,
@@ -67,6 +68,7 @@ export function registerLibraryHandlers({
   });
 
   presetIntervalFilter.addEventListener("change", () => renderPresetLibrary());
+  presetTagFilter.addEventListener("change", () => renderPresetLibrary());
   presetLibrary.addEventListener("change", (event) => {
     const input = event.target;
     if (!input.classList.contains("preset-interval-input")) return;

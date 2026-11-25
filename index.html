@@ -81,9 +81,10 @@
         <details id="sound-library-browser" class="disclosure sound-library-browser">
           <summary>Browse Sounds</summary>
           <div class="disclosure-body">
+            <div class="sound-library-filters">
             <label>
               <span>Search sounds</span>
-              <input id="preset-search" type="search" placeholder="bell, soft, tick..." />
+              <input id="preset-search" type="search" placeholder="Search names, descriptions, tags..." />
             </label>
             <label>
               <span>Source</span>
@@ -97,6 +98,12 @@
               <span>Applies to</span>
               <select id="preset-interval-filter"><option value="all">Any interval</option><option value="untagged">Untagged</option><option value="1">1 minute</option><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="60">60 minutes</option></select>
             </label>
+            <label>
+              <span>Sound tag</span>
+              <select id="preset-tag-filter"><option value="__all__">Any tag</option></select>
+            </label>
+            </div>
+            <p id="preset-results-count" class="preset-results-count" aria-live="polite"></p>
             <div id="preset-library" class="preset-library"></div>
           </div>
         </details>

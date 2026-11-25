@@ -79,8 +79,8 @@
   padding: 0.65rem;
   background: var(--surface-soft);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.6rem;
+  grid-template-columns: minmax(0, 1fr) minmax(8rem, 12rem) auto;
+  gap: 0.8rem;
   align-items: center;
 }
 
@@ -89,7 +89,22 @@
   overflow-wrap: anywhere;
 }
 
-.preset-interval-tags { display: grid; gap: 0.2rem; margin-top: 0.5rem; max-width: 18rem; }
+.preset-interval-tags { display: grid; gap: 0.2rem; min-width: 0; }
+.preset-interval-tags span { display: none; }
+.sound-library-filters { display: grid; grid-template-columns: minmax(12rem, 2fr) repeat(3, minmax(8rem, 1fr)); gap: .75rem; align-items: end; }
+.sound-library-filters label, .sound-library-filters input, .sound-library-filters select { min-width: 0; width: 100%; }
+.preset-results-count { color: var(--muted); font-size: .8rem; margin-top: .75rem; }
+.preset-table { display: grid; gap: .3rem; min-width: 0; }
+.preset-table-heading { display: grid; grid-template-columns: minmax(0, 1fr) minmax(8rem, 12rem) 4.7rem; gap: .8rem; padding: 0 .65rem; color: var(--muted); font-size: .75rem; }
+@media (max-width: 760px) { .sound-library-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) {
+  .sound-library-filters { grid-template-columns: 1fr 1fr; }
+  .sound-library-filters label:first-child { grid-column: 1 / -1; }
+  .preset-table-heading { display: none; }
+  .preset-item { grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; }
+  .preset-info { grid-column: 1 / -1; }
+  .preset-interval-tags span { display: inline; }
+}
 .preset-interval-tags span, .preset-interval-tags small { color: var(--muted); font-size: 0.78rem; }
 
 .preset-meta {

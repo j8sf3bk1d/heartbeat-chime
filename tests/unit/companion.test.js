@@ -17,6 +17,14 @@ describe("companion preview selection", () => {
 });
 
 describe("visual novel companion", () => {
+  it("shows a non-voice sound label in a neutral companion cue", async () => {
+    const show = vi.fn().mockResolvedValue(true);
+    const play = vi.fn().mockResolvedValue(true);
+    const controller = createCompanionController({ state: {companionEnabled:true}, isDesktopRuntime: () => true, show, hide: vi.fn(), getPresetLabel: () => "Japanese train station: Ticket gate", leadMs: 1 });
+    expect(await controller.playWithIntro({presetId:"theme_station_1", play})).toBe(true);
+    expect(show.mock.calls[0][0]).toMatchObject({text:"Japanese train station: Ticket gate", expression:"neutral"});
+    expect(play).toHaveBeenCalledOnce();
+  });
   it("prewarms only enabled desktop companions and reports real failures", async () => {
     const state = { companionEnabled: false };
     const prewarm = vi.fn().mockResolvedValue(true);
