@@ -1,8 +1,16 @@
-# Heartbeat Chime — community development preview
+# Heartbeat Chime
 
-Heartbeat is a local desktop chime app with customizable schedules, imported sounds, a visual-novel-style companion, character packs and portable backup. This is a free reference project, provided as-is. The local sibling does not yet have a configured Git remote.
+![Heartbeat Chime: chimes, voice cues, and a companion with opinions](docs/assets/social-preview.jpg)
 
-It includes synthesized chimes and the existing spoken pack. Heartbeat’s original character is included; you can also import your own character pack in Settings. The [agent-assisted creator kit](docs/character-creator/README.md) explains how to create one. Character packs currently change appearance, not the voice or dialogue.
+**A little nudge, right on time.**
+
+Heartbeat is a local-first chime app for your desktop, with customizable sounds, voice cues, and an optional visual-novel companion. Let it sit in the background and mark the passage of time—or bring a character along to deliver your reminders with a little more personality.
+
+- **Make it yours:** choose clock-aligned intervals, volume, voice clips, and sound-effect themes, or import your own sounds.
+- **Bring a companion:** show the included character in a screen corner, or import and switch your own character packs. See the [agent-assisted creator kit](docs/character-creator/README.md).
+- **Keep your setup:** export a full backup with settings, imported audio, and character packs.
+
+Character packs currently change appearance, not the voice or dialogue. Heartbeat is a free, as-is reference project; native release and platform checks are still in progress.
 
 ## Start with an agent
 

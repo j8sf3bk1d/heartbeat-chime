@@ -6,5 +6,6 @@
 - `src/assets/themed/`: ElevenLabs-generated sound effects.
 - `src/assets/companion/` and `src-tauri/icons/`: Heartbeat character art and app icons.
 - `examples/character/neutral.png`: example art.
+- `docs/assets/social-preview.jpg`: project social-preview artwork.
 
 `vendor/glib-0.18.5/` is third-party source under its own included LICENSE and COPYRIGHT; software dependencies and their media have their own terms. Keep the included notices and review relevant dependencies and asset terms when preparing a distribution.

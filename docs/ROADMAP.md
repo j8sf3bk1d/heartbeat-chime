@@ -8,4 +8,4 @@ This is a free, as-is reference project. Source sharing and supported binary rel
 - The four owner-auditioned sound-effect themes now have tagged built-in clips and reversible quick setup. Keep provider provenance with the assets; add reusable named user presets if needed.
 - Develop character-specific voice-pack metadata and creation flows; character visuals, sound selection and assignments remain independently switchable. See character-creator/voice-packs.md.
 - Expand character animation and lab coverage with purpose-made distributable full-expression fixtures; the included example is a still image only.
-- Configure the remote once the owner supplies it. Do not publish automatically. Code uses MIT; media and third-party terms remain separate.
+- Maintain the public source as a free reference project. Code uses MIT; media and third-party terms remain separate.

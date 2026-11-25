@@ -1,6 +1,6 @@
 # Public readiness audit — 2026-11-23
 
-Scope: local community sibling, source and reachable Git history; no remote or public release. This is a release-readiness review, not a penetration test or legal opinion. Local environment files, common key-file types, exported settings/backups and logs are ignored by Git; ignore rules do not protect already tracked files or replace a secret scan. Owner selected MIT for original code and docs. See [license scope](../LICENSE-CONTENT.md); media and third-party dependencies are excluded.
+Scope: the community sibling, source and reachable Git history at the time of this review, before the first public push. This is a release-readiness review, not a penetration test or legal opinion. Local environment files, common key-file types, exported settings/backups and logs are ignored by Git; ignore rules do not protect already tracked files or replace a secret scan. Owner selected MIT for original code and docs. See [license scope](../LICENSE-CONTENT.md); media and third-party dependencies are excluded.
 
 ## Reference-project status and follow-ups
 
