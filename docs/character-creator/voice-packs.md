@@ -6,6 +6,8 @@ A coherent character needs more than a sprite swap: a battle-hungry hero, a shy 
 
 For practical instructions to create and import audio today, including optional ElevenLabs generation, see [voice and sound generation](audio-generation.md).
 
+For the existing mapped voice bank and an end-to-end authoring workflow, see [character-to-voice workflow](emotion-voice-workflow.md).
+
 Character JSON contains images and masks only; switching it leaves audio and assignments alone. Built-in voice clips carry line text, expression and other metadata. The current companion cue looks up that metadata only for built-in voices; custom imported sounds display their label and resolve to neutral. Existing sound-pack import supports audio, labels, generic tags and profiles, but does not carry custom companion dialogue or expression mappings. A creator can prepare a written script or audio files separately today, but cannot deliver the full authored performance through the character importer.
 
 ## Proposed creation and playback model

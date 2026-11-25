@@ -17,4 +17,6 @@ Character creation uses the [creator kit](../character-creator/README.md). If th
 
 For authored audio, use the [voice and sound generation guide](../character-creator/audio-generation.md), including the current import limits and optional ElevenLabs workflow. Never search sibling projects for credentials or assume permission to spend on a provider account. Everyday setup is covered in the [user guide](../user-guide.md).
 
+For expressive voice creation, the [character-to-voice workflow](../character-creator/emotion-voice-workflow.md) distinguishes the existing bundled dialogue/expression mapping from the not-yet-supported imported voice-pack format.
+
 The optional repo-native practices are informed by [Embedded Delivery OS](https://github.com/j8sf3bk1d/embedded-delivery-os). No particular agent platform is required.

@@ -11,6 +11,8 @@ You can record audio yourself, use your operating system's speech tools, generat
 
 A character JSON controls visuals only. Custom imported audio currently shows its **label** in the companion dialogue and uses the neutral expression; arbitrary written dialogue, per-line expressions, and grouping alternate takes by authored line ID are not part of the current import format. Replacing the character will not replace its sounds. See [the voice-pack design](voice-packs.md) for the planned richer model.
 
+The built-in ElevenLabs voice bank already does map each line to a caption and expression. See the [character-to-voice workflow](emotion-voice-workflow.md) for the included bank, how to plan expression coverage and paired takes, and what source changes are currently needed for a new mapped bank.
+
 For recognizable voices and shareable packs, use voices and source material for which you have the necessary rights and consent. Provider plan terms, costs, voice availability and output permissions may change; check them for your intended use.
 
 ## ElevenLabs: app workflow

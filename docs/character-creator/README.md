@@ -4,6 +4,8 @@ This kit takes a character description through artwork, animation frames, mask t
 
 To create or import audio alongside your character, see [voice and sound generation](audio-generation.md). Visual packs and imported voice clips remain independent; custom dialogue and expression mapping are future work.
 
+The [character-to-voice workflow](emotion-voice-workflow.md) explains the bundled voice bank's existing dialogue and expression mapping and how to plan an expressive voice set for a character.
+
 ## Start in a fresh agent chat
 
 Open this repository in the chat and paste:
