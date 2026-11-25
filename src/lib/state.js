@@ -86,6 +86,7 @@ export function normalizeState(parsed, defaults, presets, validProfileIds = [DEF
     resumeOnLaunch: parsed.resumeOnLaunch === true,
     schedulerRequested: parsed.schedulerRequested === true,
     companionEnabled: parsed.companionEnabled === true,
+    companionSuppressNonVoice: parsed.companionSuppressNonVoice === true,
     companionNameMode: parsed.companionNameMode === "custom" ? "custom" : "default",
     companionCustomName: normalizeCompanionName(parsed.companionCustomName),
     companionCharacterMotion: typeof parsed.companionCharacterMotion === "boolean" ? parsed.companionCharacterMotion : true,

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { companionCueForPreset, createCompanionController, createCompanionPreviewPicker, expressionForDirection, expressionForVoice, prewarmCompanionIfEnabled } from "../../src/lib/companion.js";
+import { companionCueForPreset, isNonVoicePreset, createCompanionController, createCompanionPreviewPicker, expressionForDirection, expressionForVoice, prewarmCompanionIfEnabled } from "../../src/lib/companion.js";
 import { createDefaultState, normalizeState, serializeState } from "../../src/lib/state.js";
 import { PRESETS } from "../../src/lib/soundProfiles.js";
 import { createCueActions } from "../../src/lib/cueActions.js";
@@ -16,6 +16,21 @@ describe("companion preview selection", () => {
   });
 });
 
+describe("sound effect classification", () => {
+  it("recognizes built-in effects and explicitly tagged imports, without guessing about imported voices", () => {
+    const lookup = (id) => ({ effect: { tags: ["Sound Effect"] }, sfx: { tags: ["sfx"] }, voice: { tags: ["voice", "sfx"] }, unknown: { tags: [] } })[id];
+    for (const id of ["soft_chime", "grand_bell", "theme_station_1", "effect", "sfx"]) expect(isNonVoicePreset(id, lookup)).toBe(true);
+    for (const id of ["laura-minute-01", "voice", "unknown", "missing"]) expect(isNonVoicePreset(id, lookup)).toBe(false);
+  });
+  it("round-trips the preference and preserves existing behavior for old settings", () => {
+    const defaults = createDefaultState();
+    expect(normalizeState({}, defaults, PRESETS).companionSuppressNonVoice).toBe(false);
+    const configured = normalizeState({ companionSuppressNonVoice: true }, defaults, PRESETS);
+    expect(normalizeState(serializeState(configured), defaults, PRESETS).companionSuppressNonVoice).toBe(true);
+    expect(normalizeState({ companionSuppressNonVoice: "true" }, defaults, PRESETS).companionSuppressNonVoice).toBe(false);
+  });
+});
+
 describe("visual novel companion", () => {
   it("shows a non-voice sound label in a neutral companion cue", async () => {
     const show = vi.fn().mockResolvedValue(true);
@@ -24,6 +39,14 @@ describe("visual novel companion", () => {
     expect(await controller.playWithIntro({presetId:"theme_station_1", play})).toBe(true);
     expect(show.mock.calls[0][0]).toMatchObject({text:"Japanese train station: Ticket gate", expression:"neutral"});
     expect(play).toHaveBeenCalledOnce();
+  });
+  it("suppresses a tagged imported effect but retains an unclassified imported clip", async () => {
+    const show = vi.fn().mockResolvedValue(true), play = vi.fn().mockResolvedValue(true);
+    const controller = createCompanionController({ state: { companionEnabled: true, companionSuppressNonVoice: true }, isDesktopRuntime: () => true, show, hide: vi.fn(), getPresetLabel: () => "Imported", getPreset: (id) => ({ tags: id === "custom:effect" ? ["sfx"] : [] }), leadMs: 0 });
+    expect(await controller.playWithIntro({ presetId: "custom:effect", play })).toBe(true);
+    expect(show).not.toHaveBeenCalled();
+    expect(await controller.playWithIntro({ presetId: "custom:unknown", play })).toBe(true);
+    expect(show).toHaveBeenCalledOnce(); expect(play).toHaveBeenCalledTimes(2);
   });
   it("prewarms only enabled desktop companions and reports real failures", async () => {
     const state = { companionEnabled: false };

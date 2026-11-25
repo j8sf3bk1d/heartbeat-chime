@@ -1,4 +1,5 @@
 import { getBuiltInVoiceMetadata } from "./builtInVoices.js";
+import { PRESETS } from "./soundProfiles.js";
 import { isCompanionExpression } from "./companionExpressions.js";
 import { resolveCuePresetId } from "./presetPlayback.js";
 import { selectedCharacter } from "./characterStore.js";
@@ -39,6 +40,18 @@ export function companionCueForPreset(presetId, getPresetLabel) {
   };
 }
 
+// Imported clips have no reliable inferred type. Preserve their existing behavior
+// unless the pack explicitly identifies them as effects.
+export function isNonVoicePreset(presetId, getPreset = () => null) {
+  if (getBuiltInVoiceMetadata(presetId)) return false;
+  if (PRESETS.some((preset) => preset.id === presetId)) return true;
+  const tags = getPreset(presetId)?.tags;
+  if (!Array.isArray(tags)) return false;
+  const normalized = tags.map((tag) => String(tag).trim().toLowerCase());
+  if (normalized.some((tag) => tag === "voice" || tag === "spoken")) return false;
+  return normalized.some((tag) => tag === "sound effect" || tag === "sfx");
+}
+
 // Warming never shows a window. Keep this optional for browser/disabled mode,
 // and do not report a stale error if the companion was disabled in flight.
 export async function prewarmCompanionIfEnabled({ state, isDesktopRuntime, prewarm, onError = () => {} }) {
@@ -53,7 +66,7 @@ export async function prewarmCompanionIfEnabled({ state, isDesktopRuntime, prewa
   }
 }
 
-export function createCompanionController({ state, isDesktopRuntime, show, hide, sendSpeech = () => {}, sendTiming = () => {}, setMotionPreference = () => {}, shouldAnimateSpeech = () => !globalThis.window?.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches, getPresetLabel, onCue = () => {}, onError = () => {}, leadMs = 1000, showTimeoutMs = 2200 }) {
+export function createCompanionController({ state, isDesktopRuntime, show, hide, sendSpeech = () => {}, sendTiming = () => {}, setMotionPreference = () => {}, shouldAnimateSpeech = () => !globalThis.window?.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches, getPresetLabel, getPreset = () => null, onCue = () => {}, onError = () => {}, leadMs = 1000, showTimeoutMs = 2200 }) {
   // A timestamp-based starting point also advances across ordinary WebView
   // reloads while the native window and its latest generation stay alive.
   let generation = Date.now() * 1024;
@@ -93,6 +106,12 @@ export function createCompanionController({ state, isDesktopRuntime, show, hide,
         lifecycle("play-request");
         return play(onBufferScheduled, onAudioTiming, trace);
       };
+      if (state.companionSuppressNonVoice === true && isNonVoicePreset(presetId, getPreset)) {
+        // Preparation may run ahead, but playback must still wait for the cue's
+        // target. Do not touch the visual generation for an overlapping voice.
+        void Promise.resolve().then(prepare).catch(() => {});
+        return await playUnlessPaused();
+      }
       const cue = companionCueForPreset(presetId, getPresetLabel);
       const now = performance.now();
       if (pending.size || now < visualBusyUntil) {

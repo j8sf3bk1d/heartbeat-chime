@@ -29,6 +29,7 @@ export function createDefaultState() {
     resumeOnLaunch: false,
     schedulerRequested: false,
     companionEnabled: false,
+    companionSuppressNonVoice: false,
     companionNameMode: "default",
     companionCustomName: "",
     companionCharacterMotion: true,

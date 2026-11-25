@@ -7,6 +7,7 @@ export function serializeState(state) {
     resumeOnLaunch: state.resumeOnLaunch === true,
     schedulerRequested: state.schedulerRequested === true,
     companionEnabled: state.companionEnabled === true,
+    companionSuppressNonVoice: state.companionSuppressNonVoice === true,
     companionNameMode: state.companionNameMode === "custom" ? "custom" : "default",
     companionCustomName: normalizeCompanionName(state.companionCustomName),
     companionCharacterMotion: state.companionCharacterMotion !== false,

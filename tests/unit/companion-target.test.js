@@ -10,6 +10,31 @@ function setup() {
 }
 
 describe('target-anchored companion', () => {
+  it('plays suppressed effects at the target without disturbing an overlapping voice', async () => {
+    vi.useFakeTimers(); vi.setSystemTime(new Date('2026-11-17T13:00:00Z'));
+    const state = { companionEnabled: true, companionSuppressNonVoice: true };
+    const show = vi.fn(async () => true), hide = vi.fn(async () => true);
+    const controller = createCompanionController({state, isDesktopRuntime: () => true, show, hide, getPresetLabel: () => 'Cue', leadMs: 1000});
+    const voice = vi.fn(async () => true), effect = vi.fn(async () => true), prepare = vi.fn(async () => true);
+    const target = Date.now() + 2000;
+    const a = controller.playWithIntro({presetId: 'laura-minute-01', play: voice, targetAtMs: target});
+    const b = controller.playWithIntro({presetId: 'theme_station_1', play: effect, prepare, targetAtMs: target});
+    await vi.advanceTimersByTimeAsync(1000); expect(show).toHaveBeenCalledOnce(); expect(prepare).toHaveBeenCalledOnce(); expect(effect).not.toHaveBeenCalled();
+    await vi.advanceTimersByTimeAsync(1000); expect(await a).toBe(true); expect(await b).toBe(true);
+    expect(voice).toHaveBeenCalledOnce(); expect(effect).toHaveBeenCalledOnce(); expect(hide).not.toHaveBeenCalled();
+  });
+  it('does not play a suppressed effect after cancellation or a stale target', async () => {
+    vi.useFakeTimers(); vi.setSystemTime(new Date('2026-11-17T13:00:00Z'));
+    const state = { companionEnabled: true, companionSuppressNonVoice: true };
+    const show = vi.fn(), play = vi.fn();
+    const controller = createCompanionController({state, isDesktopRuntime: () => true, show, hide: vi.fn(), getPresetLabel: () => 'Cue'});
+    let current = true;
+    const pending = controller.playWithIntro({presetId: 'wood_tick', play, targetAtMs: Date.now() + 1000, isCurrent: () => current});
+    current = false; await vi.advanceTimersByTimeAsync(1000);
+    expect(await pending).toBe('cancelled'); expect(play).not.toHaveBeenCalled();
+    expect(await controller.playWithIntro({presetId: 'wood_tick', play, targetAtMs: Date.now() - 20000, maxLatenessMs: 10000})).toBe('stale');
+    expect(show).not.toHaveBeenCalled(); expect(play).not.toHaveBeenCalled();
+  });
   it('prepares first, shows one second before the target, and plays at the target', async () => {
     const { controller, show, play } = setup();
     const target = Date.now() + 2000;

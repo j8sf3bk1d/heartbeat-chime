@@ -301,6 +301,7 @@ document.getElementById("audio-diagnostics-select").addEventListener("click", ()
 const companionStatus = document.getElementById("companion-status");
 const companionEnabled = document.getElementById("companion-enabled");
 const companionCharacterMotion = document.getElementById("companion-character-motion");
+const companionSuppressNonVoice = document.getElementById("companion-suppress-non-voice");
 const companionNameMode = document.getElementById("companion-name-mode"), companionCustomName = document.getElementById("companion-custom-name");
 const companionMonitor = document.getElementById("companion-monitor");
 const companionCorner = document.getElementById("companion-corner");
@@ -364,7 +365,7 @@ function renderCompanionStatus() {
   companionStatus.textContent = companionError || companionDisplayNotice || (isDesktopRuntime() ? "" : "The companion is available in the desktop app.");
 }
 const companion = createCompanionController({
-  state, isDesktopRuntime, show: showCompanionOverlay, hide: hideCompanionOverlay, sendSpeech: sendCompanionSpeech, sendTiming: sendCompanionTiming, setMotionPreference: setCompanionCharacterMotion, getPresetLabel,
+  state, isDesktopRuntime, show: showCompanionOverlay, hide: hideCompanionOverlay, sendSpeech: sendCompanionSpeech, sendTiming: sendCompanionTiming, setMotionPreference: setCompanionCharacterMotion, getPresetLabel, getPreset: (id) => getAllPresets().find((preset) => preset.id === id),
   onCue: ({presetId, cue, characterId, generation, targetAtMs}) => {
     if (!diagnosticDisplayEnabled) return;
     const voice = getBuiltInVoiceMetadata(presetId);
@@ -394,6 +395,8 @@ function renderCompanionControls() {
   companionCustomName.value = state.companionCustomName;
   companionCustomName.disabled = state.companionNameMode !== "custom";
   companionEnabled.disabled = !desktop;
+  companionSuppressNonVoice.checked = state.companionSuppressNonVoice === true;
+  companionSuppressNonVoice.disabled = !desktop || !state.companionEnabled;
   companionCharacterMotion.checked = state.companionCharacterMotion !== false;
   companionCharacterMotion.disabled = !desktop || !state.companionEnabled;
   companionMonitor.disabled = !desktop || !state.companionEnabled;
@@ -445,6 +448,7 @@ companionCustomName.addEventListener("change", () => {
 companionMonitor.addEventListener("change", () => { state.companionMonitorId = companionMonitor.value; saveState(); if (diagnosticDisplayEnabled) void setDiagnosticDisplay(true, state.companionMonitorId).catch(() => { diagnosticDisplayStatus.textContent = "Could not move the diagnostic display."; }); });
 companionCorner.addEventListener("change", () => { state.companionCorner = companionCorner.value; saveState(); });
 companionSize.addEventListener("change", () => { state.companionSize = Number(companionSize.value); saveState(); });
+companionSuppressNonVoice.addEventListener("change", () => { state.companionSuppressNonVoice = companionSuppressNonVoice.checked; saveState(); });
 companionCharacterMotion.addEventListener("change", () => {
   state.companionCharacterMotion = companionCharacterMotion.checked;
   saveState();
