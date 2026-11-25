@@ -16,19 +16,24 @@ Character packs currently change appearance, not the voice or dialogue. Heartbea
 
 Open this repository in your preferred agentic tool and say: “Existing repo: read the cold-start guidance, then help me start working on Heartbeat.” The provider-neutral [cold-start guide](docs/process/cold-start.md) explains what to read, how to preserve existing work, and how to coordinate changes.
 
-## Develop
+## Run from source
 
-Install Node.js, Rust and the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/), then run:
+Install Node.js 22 or 24, Rust 1.90 or newer, and the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) for your platform. From the repository root, install dependencies and run the checks:
 
 ```sh
 npm ci --ignore-scripts
-npm run dev
 npm test
 npm run build
-npm run tauri:dev
 ```
 
-The dev server uses port 5179 to keep its browser storage separate from the original app. The desktop bundle ID is `org.heartbeat.community.preview` and its product name is `Heartbeat Chime Community`; native data isolation has not yet been verified on a target machine. Avoid importing your primary data until that check is complete. `npm run package:macos` builds into a temporary directory and stages a durable app under ignored `artifacts/`; preserve any app you use before cleaning artifacts.
+Choose one development mode:
+
+- **Desktop app:** run `npm run tauri:dev`. This starts its own frontend server on port 5179 and opens the Tauri app.
+- **Browser preview:** run `npm run dev`, then open the local URL it prints. Stop that server before starting `npm run tauri:dev`; both use port 5179.
+
+The browser preview is useful for exploring settings and chimes. Native features such as the always-on-top companion overlay, tray, launch at login and macOS native audio need the desktop app. The first build may take several minutes.
+
+The desktop bundle ID is `org.heartbeat.community.preview` and its product name is `Heartbeat Chime Community`; native data isolation from other installations has not yet been verified on a target machine. Avoid importing your primary data until that check is complete. `npm run package:macos` builds into a temporary directory and stages a durable app under ignored `artifacts/`; preserve any app you use before cleaning artifacts.
 
 For contributor scope and work remaining, see [roadmap](docs/ROADMAP.md) and [sync policy](docs/upstream-sync.md). Security, compatibility and packaging are best effort; see the [audit](docs/release-audit.md) for known limitations. Source sharing and a supported, signed binary release are separate steps.
 
